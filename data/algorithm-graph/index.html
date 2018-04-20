@@ -8,7 +8,7 @@
 <meta property="og:description" content="그래프는 자료구조의 일종입니다. 실생활에서 예를 들자면 지하철에서 역은 정점(Vertex), 간선은 역 사이, 도로는 간선, 사거리나 교차로가 정점, 페이스북을 예로 들자면 사람이 정점, 친구 관계 사이에 간선이 연결되게 됩니다.  정점(Node,…">
 <meta property="og:locale" content="kr">
 <meta property="og:image" content="http://yoursite.com/images/data/graph.png">
-<meta property="og:updated_time" content="2018-04-19T13:24:12.001Z">
+<meta property="og:updated_time" content="2018-04-19T14:38:00.087Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="자료구조 - Graph">
 <meta name="twitter:description" content="그래프는 자료구조의 일종입니다. 실생활에서 예를 들자면 지하철에서 역은 정점(Vertex), 간선은 역 사이, 도로는 간선, 사거리나 교차로가 정점, 페이스북을 예로 들자면 사람이 정점, 친구 관계 사이에 간선이 연결되게 됩니다.  정점(Node,…">
@@ -50,12 +50,41 @@
 </blockquote>
 <p>아래에서는 <code>A는 outdegree가 2, indegree가 0</code>, <code>C는 outdegree가 3, indegree가 1</code>이다.</p>
 <p><img src="/images/data/path.png" alt="path"></p>
+<h2 id="그래프의-표현"><a href="#그래프의-표현" class="headerlink" title="그래프의 표현"></a>그래프의 표현</h2><p><img src="/Users/kyunam/Documents/hexo/hexo/themes/overdose/source/images/data/graph-code.png" alt=""></p>
+<p>위처럼 사진 형태의 그래프가 있다면, 한눈에 알아볼 수 있지만 보통 문제에서 주어지는 그래프들은 저렇게 친절하게 주어지지 않고 아래와 같은 형식으로 주어집니다. n, m은 정점 갯수 간선 갯수를 나타냅니다.</p>
+<blockquote>
+<p>6 8     n m</p>
+<p>1 2</p>
+<p>1 5</p>
+<p>2 3</p>
+<p>2 4</p>
+<p>2 5</p>
+<p>5 4</p>
+<p>4 3</p>
+<p>4 6</p>
+</blockquote>
+<p>위와 같은 경우 직접 연결된 내용을 보기 전에는 양방향인지, 단방향인지는 알 수 없습니다.</p>
+<h2 id="배열을-이용해-그래프를-저장하기"><a href="#배열을-이용해-그래프를-저장하기" class="headerlink" title="배열을 이용해 그래프를 저장하기"></a>배열을 이용해 그래프를 저장하기</h2><p><img src="/Users/kyunam/Documents/hexo/hexo/themes/overdose/source/images/data/graph-code.png" alt=""></p>
+<ul>
+<li>인접 행렬</li>
+</ul>
+<p>정점의 갯수가 V라고 하면, V^2 크기의 이차원 배열을 이용해 저장한다. i에서 j로 가는 경로가 있다면 <code>A[i][j] = 1</code> , 1번 정점에서 ,5로 가는 경로가 있다면 <code>A[1][5] = 1</code>이 된다. </p>
+<p>위와 같은 예에서는 아래와 같은 배열이 나온다.</p>
+<blockquote>
+<p>0 1 0 0 1 0</p>
+<p>1 0 1 1 1 0</p>
+<p>0 1 0 1 0 0</p>
+<p>0 1 1 0 1 1</p>
+<p>1 1 0 1 0 0</p>
+<p>0 0 0 1 0 0</p>
+</blockquote>
+<p>인접 행렬은 없는 간선 또한 저장하기 때문에 공간적으로 비효율적이어서 잘 사용하지 않는다. 쉬운 문제를 풀때 사용하는 방법.</p>
 </div><div class="article__tags"><a class="article__tags__item" href="/tags/Graph/">Graph</a></div><div class="article__author" itemscope itemprop="author" itemtype="https://schema.org/Person"><img class="article__author__image" src="/images/profile.png" alt="KyuNam"><a class="article__author__link" title="About KyuNam" rel="author">KyuNam</a><p class="article__author__desc">dev log</p><div class="article__author__socials"><a class="article__author__socials__item" href="https://github.com/tramyu" title="github" target="_blank"><i class="fa fa-github"></i></a><a class="article__author__socials__item" href="https://www.facebook.com/xmfpes" title="facebook" target="_blank"><i class="fa fa-facebook"></i></a><a class="article__author__socials__item" href="https://www.linkedin.com/feed/" title="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a><a class="article__author__socials__item" href="https://www.instagram.com/" title="instagram" target="_blank"><i class="fa fa-instagram"></i></a><a class="article__author__socials__item" href="/atom.xml" title="rss" target="_blank"><i class="fa fa-rss"></i></a></div><meta itemprop="name" content="KyuNam"></div><div class="sharer" id="sharer"><div class="sharer-inner"><div class="sharer__right"><button class="sharer__item" id="sharer-facebook"><i class="fa fa-facebook-official"></i></button><button class="sharer__item" id="sharer-twitter"><i class="fa fa-twitter"></i></button><button class="sharer__item" id="sharer-pinterest"><i class="fa fa-pinterest"></i></button><button class="sharer__item" id="sharer-pocket"><i class="fa fa-get-pocket"></i></button></div></div></div><!-- Disqus Code--><div id="disqus_thread"></div><script>(function() {
   var d = document, s = d.createElement('script');
   s.src = '//kyunam-disqus-com.disqus.com/embed.js';
   s.setAttribute('data-timestamp', +new Date());
   (d.head || d.body).appendChild(s);
-})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-04-19T13:24:12.001Z"><meta itemprop="articleBody" content="그래프는 자료구조의 일종입니다. 실생활에서 예를 들자면 지하철에서 역은 정점(Vertex), 간선은 역 사이, 도로는 간선, 사거리나 교차로가 정점, 페이스북을 예로 들자면 사람이 정점, 친구 관계 사이에 간선이 연결되게 됩니다.
+})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-04-19T14:38:00.087Z"><meta itemprop="articleBody" content="그래프는 자료구조의 일종입니다. 실생활에서 예를 들자면 지하철에서 역은 정점(Vertex), 간선은 역 사이, 도로는 간선, 사거리나 교차로가 정점, 페이스북을 예로 들자면 사람이 정점, 친구 관계 사이에 간선이 연결되게 됩니다.
 
 정점(Node, Vertex)
 간선(Edge) 정점간의 관계를 나타낸다.
