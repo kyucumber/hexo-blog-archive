@@ -8,7 +8,7 @@
 <meta property="og:description" content="그래프는 자료구조의 일종입니다. 실생활에서 예를 들자면 지하철에서 역은 정점(Vertex), 간선은 역 사이, 도로는 간선, 사거리나 교차로가 정점, 페이스북을 예로 들자면 사람이 정점, 친구 관계 사이에 간선이 연결되게 됩니다.  정점(Node,…">
 <meta property="og:locale" content="kr">
 <meta property="og:image" content="http://yoursite.com/images/data/graph.png">
-<meta property="og:updated_time" content="2018-04-20T16:09:55.000Z">
+<meta property="og:updated_time" content="2018-04-22T11:57:38.586Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="자료구조 - Graph">
 <meta name="twitter:description" content="그래프는 자료구조의 일종입니다. 실생활에서 예를 들자면 지하철에서 역은 정점(Vertex), 간선은 역 사이, 도로는 간선, 사거리나 교차로가 정점, 페이스북을 예로 들자면 사람이 정점, 친구 관계 사이에 간선이 연결되게 됩니다.  정점(Node,…">
@@ -23,7 +23,7 @@
 <p>A - B</p>
 <p>A - C - B</p>
 <p>A - C - E - B</p>
-<p><img src="/Users/kyunam/Documents/hexo/hexo/themes/overdose/source/images/algorithm/path.png" alt=""></p>
+<p><img src="/images/algorithm/path.png" alt=""></p>
 <h2 id="사이클-Cycle"><a href="#사이클-Cycle" class="headerlink" title="사이클(Cycle)"></a>사이클(Cycle)</h2><p>정점 A에서 A로 다시 돌아오는 경로</p>
 <p>A -&gt; C -&gt; B -&gt; A</p>
 <p>A -&gt; C -&gt; E -&gt; B -&gt; A</p>
@@ -37,11 +37,10 @@
 <p><img src="/images/data/multipleEdge.png" alt=""></p>
 <h2 id="루프-Loop"><a href="#루프-Loop" class="headerlink" title="루프(Loop)"></a>루프(Loop)</h2><p>간선의 양 끝 점이 같은 경우, A -&gt; A</p>
 <p><img src="/images/data/loop.png" alt=""></p>
-<h2 id="가중치-Weight"><a href="#가중치-Weight" class="headerlink" title="가중치(Weight)"></a>가중치(Weight)</h2><p>간선을 지나갈때 필요한 시간, 거리 등등을 나타낸다. 보통 문제는 이 가중치를 바탕으로 최단거리를 구하거나 하는 경우가 많다.</p>
-<p>가중치가 없는 그래프에서는 가중치를 1로 두고 문제를 풀면 됩니다.</p>
+<h2 id="가중치-Weight"><a href="#가중치-Weight" class="headerlink" title="가중치(Weight)"></a>가중치(Weight)</h2><p>간선을 지나갈때 필요한 시간, 거리 등등을 나타낸다. 보통 문제는 이 가중치를 바탕으로 최단거리를 구하거나 하는 경우가 많은데 가중치가 없는 그래프에서는 가중치를 1로 두고 문제를 풀면 됩니다.</p>
 <p>아래에서 간선별로 표시된 숫자가 가중치에 해당합니다.</p>
 <p><img src="/images/data/weight.png" alt="weight"></p>
-<h2 id="차수-Degree"><a href="#차수-Degree" class="headerlink" title="차수(Degree)"></a>차수(Degree)</h2><p>정점과 연결된 간선의 갯수를 말함.</p>
+<h2 id="차수-Degree"><a href="#차수-Degree" class="headerlink" title="차수(Degree)"></a>차수(Degree)</h2><p>정점과 연결된 간선의 갯수를 말합니다.</p>
 <blockquote>
 <p> 정점으로 들어오는 간선 : indegree</p>
 </blockquote>
@@ -51,9 +50,9 @@
 <p>아래에서는 <code>A는 outdegree가 2, indegree가 0</code>, <code>C는 outdegree가 3, indegree가 1</code>이다.</p>
 <p><img src="/images/data/path.png" alt="path"></p>
 <h2 id="그래프의-표현"><a href="#그래프의-표현" class="headerlink" title="그래프의 표현"></a>그래프의 표현</h2><p><img src="/Users/kyunam/Documents/hexo/hexo/themes/overdose/source/images/data/graph-code.png" alt=""></p>
-<p>위처럼 사진 형태의 그래프가 있다면, 한눈에 알아볼 수 있지만 보통 문제에서 주어지는 그래프들은 저렇게 친절하게 주어지지 않고 아래와 같은 형식으로 주어집니다. n, m은 정점 갯수 간선 갯수를 나타냅니다.</p>
+<p>위처럼 사진 형태의 그래프가 있다면, 한눈에 알아볼 수 있지만 보통 문제에서 주어지는 그래프들은 저렇게 친절하게 주어지지 않고 아래와 같은 형식으로 주어집니다. 첫줄인 두 숫자는 각각 정점 갯수, 간선 갯수를 나타냅니다.</p>
 <blockquote>
-<p>6 8     n m</p>
+<p>6 8</p>
 <p>1 2</p>
 <p>1 5</p>
 <p>2 3</p>
@@ -63,30 +62,520 @@
 <p>4 3</p>
 <p>4 6</p>
 </blockquote>
-<p>위와 같은 경우 직접 연결된 내용을 보기 전에는 양방향인지, 단방향인지는 알 수 없습니다.</p>
-<h2 id="배열을-이용해-그래프를-저장하기"><a href="#배열을-이용해-그래프를-저장하기" class="headerlink" title="배열을 이용해 그래프를 저장하기"></a>배열을 이용해 그래프를 저장하기</h2><p><img src="/Users/kyunam/Documents/hexo/hexo/themes/overdose/source/images/data/graph-code.png" alt=""></p>
+<p>가중치가 추가되면, 맨 윗줄을 제외하고 3개씩의 요소(가중치가 추가됨)를 받으면 됩니다.</p>
+<h2 id="인접-행렬을-이용한-그래프의-저장"><a href="#인접-행렬을-이용한-그래프의-저장" class="headerlink" title="인접 행렬을 이용한 그래프의 저장"></a>인접 행렬을 이용한 그래프의 저장</h2><p><img src="/images/data/graph-code.png" alt=""></p>
 <ul>
-<li>인접 행렬</li>
+<li>가중치가 없는 경우</li>
 </ul>
-<p>정점의 갯수가 V라고 하면, V^2 크기의 이차원 배열을 이용해 저장한다. i에서 j로 가는 경로가 있다면 <code>A[i][j] = 1</code> , 1번 정점에서 ,5로 가는 경로가 있다면 <code>A[1][5] = 1</code>이 된다. </p>
-<p>위와 같은 예에서는 아래와 같은 배열이 나온다.</p>
+<p>정점의 갯수가 V라고 하면, V^2 크기의 이차원 배열을 이용해 저장합니다. i에서 j로 가는 경로가 있다면 <code>A[i][j] = 1</code> , 1번 정점에서 ,5로 가는 경로가 있다면 <code>A[1][5] = 1</code>이 됩니다.  아래는 단방향 그래프를 인접 행렬으로 만든 코드입니다.</p>
+<p>양방향일때는 <code>graph[x][y] = 1</code> 부분을  <code>graph[x][y] = graph[y][x] = 1</code>을 해주면 됩니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//가중치가 없는 단방향 그래프</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] getGraph() &#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> v = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span> e = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span>[][] graph = <span class="keyword">new</span> <span class="keyword">int</span>[v + <span class="number">1</span>][v + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;e; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = sc.nextInt();</span><br><span class="line">        <span class="keyword">int</span> y = sc.nextInt();</span><br><span class="line">        graph[x][y] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> graph;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>위와 같은 예에서는 아래와 같은 배열이 나옵니다. 정점은 1부터 시작인데, 배열 인덱스가 0부터 시작하기 때문에, 저장할 때 인덱스 값에 -1을 해주거나 아래의 배열을 사용할 때 1부터 사용하면 됩니다.</p>
 <blockquote>
-<p>0 1 0 0 1 0</p>
-<p>1 0 1 1 1 0</p>
-<p>0 1 0 1 0 0</p>
-<p>0 1 1 0 1 1</p>
-<p>1 1 0 1 0 0</p>
-<p>0 0 0 1 0 0</p>
+<p>0 0 0 0 0 0 0<br>0 0 1 0 0 1 0<br>0 0 0 1 1 1 0<br>0 0 0 0 0 0 0<br>0 0 0 1 0 0 1<br>0 0 0 0 1 0 0<br>0 0 0 0 0 0 0 </p>
 </blockquote>
-<p>인접 행렬은 없는 간선 또한 저장하기 때문에 공간적으로 비효율적이어서 잘 사용하지 않는다. 쉬운 문제를 풀때 사용하는 방법.</p>
+<ul>
+<li>가중치가 있는 경우</li>
+</ul>
+<p>가중치가 있는 경우에는 그냥 기존에 1을 저장하는 과정에서, 아래처럼 가중치를 저장하면 됩니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//가중치가 있는 양방향 그래프 인접 행렬</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] getGraph() &#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> v = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span> e = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span>[][] graph = <span class="keyword">new</span> <span class="keyword">int</span>[v + <span class="number">1</span>][v + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;e; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = sc.nextInt();</span><br><span class="line">        <span class="keyword">int</span> y = sc.nextInt();</span><br><span class="line">        <span class="keyword">int</span> w = sc.nextInt();</span><br><span class="line">        graph[x][y] = graph[y][x] = w;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> graph;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>인접 행렬은 없는 간선 또한 저장하기 때문에 공간적으로 비효율적이어서 잘 사용하지 않습니다. 간단한 그래프 문제를 풀때 사용하는 방법입니다.</p>
+<h2 id="인접-리스트-Adjacency-list-를-통한-그래프의-저장"><a href="#인접-리스트-Adjacency-list-를-통한-그래프의-저장" class="headerlink" title="인접 리스트(Adjacency list)를 통한 그래프의 저장"></a>인접 리스트(Adjacency list)를 통한 그래프의 저장</h2><p>인접 리스트는 자바에서 사용하는 <code>ArrayList</code>를 이용해 연결되는 간선을 저장합니다.</p>
+<p><img src="/images/data/graph-code.png" alt=""></p>
+<blockquote>
+<p>A[1] : 2, 5</p>
+<p>A[2] : 1, 3, 4, 5</p>
+<p>A[3] : 2, 4</p>
+<p>A[4] : 3, 5, 2, 6</p>
+<p>A[5] : 1, 2, 4</p>
+<p>A[6] : 4</p>
+</blockquote>
+<p>위처럼 저장이 되는데, 이러면 간선의 갯수만큼의 공간만을 차지합니다. 인접 행렬은 정점의 N^2의 공간 복잡도를 가지지만 인접 리스트는 간선 갯수만큼의(O(E)) 공간을 차지합니다.</p>
+<ul>
+<li>가중치가 없는 경우</li>
+</ul>
+<p>양방향을 기준으로 아래 코드를 통해 인접 리스트를 구현할 수 있습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;List&lt;Integer&gt;&gt; getGraph() &#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> v = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span> e = sc.nextInt();</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; graph = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;v+<span class="number">1</span>; i++) graph.add(<span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;e; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = sc.nextInt();</span><br><span class="line">        <span class="keyword">int</span> y = sc.nextInt();</span><br><span class="line">        graph.get(x).add(y);</span><br><span class="line">        graph.get(y).add(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> graph;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>가중치가 있는 경우</li>
+</ul>
+<blockquote>
+<p>6 8</p>
+<p>1 2 2</p>
+<p>1 5 7</p>
+<p>2 3 2</p>
+<p>2 4 3</p>
+<p>2 5 1</p>
+<p>5 4 7</p>
+<p>4 3 1</p>
+<p>4 6 7</p>
+</blockquote>
+<p>가중치가 있는 경우, C++에서는 pair라는 자료구조가 있어서 활용할 수 있는데..자바에도 생겼나?</p>
+<p>근데 저 라이브러리는 java.util에 포함된 라이브러리가 아니라. 따로 클래스를 구현해주는게 나을 것 같습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;List&lt;Pair&lt;Integer ,Integer&gt;&gt;&gt; getGraph() &#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> v = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span> e = sc.nextInt();</span><br><span class="line"></span><br><span class="line">    List&lt;List&lt;Pair&lt;Integer ,Integer&gt;&gt;&gt; graph = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;v+<span class="number">1</span>; i++) graph.add(<span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;e; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = sc.nextInt();</span><br><span class="line">        <span class="keyword">int</span> y = sc.nextInt();</span><br><span class="line">        <span class="keyword">int</span> w = sc.nextInt();</span><br><span class="line">        graph.get(x).add(<span class="keyword">new</span> Pair&lt;&gt;(y, w));</span><br><span class="line">        graph.get(y).add(<span class="keyword">new</span> Pair&lt;&gt;(x, w));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> graph;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Pair를 직접 구현한 코드</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;List&lt;Pair&lt;Integer ,Integer&gt;&gt;&gt; getGraph() &#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> v = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span> e = sc.nextInt();</span><br><span class="line"></span><br><span class="line">    List&lt;List&lt;Pair&lt;Integer ,Integer&gt;&gt;&gt; graph = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;v+<span class="number">1</span>; i++) graph.add(<span class="keyword">new</span> ArrayList&lt;&gt;());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;e; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = sc.nextInt();</span><br><span class="line">        <span class="keyword">int</span> y = sc.nextInt();</span><br><span class="line">        <span class="keyword">int</span> w = sc.nextInt();</span><br><span class="line">        graph.get(x).add(<span class="keyword">new</span> Pair&lt;&gt;(y, w));</span><br><span class="line">        graph.get(y).add(<span class="keyword">new</span> Pair&lt;&gt;(x, w));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;v; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;graph.get(i).size(); j++)&#123;</span><br><span class="line">            System.out.print(graph.get(i).get(j).getFirst() + <span class="string">":"</span> +  graph.get(i).get(j).getSecond() + <span class="string">" "</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> graph;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&lt;<span class="title">T</span>, <span class="title">S</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> T first;</span><br><span class="line">    <span class="keyword">private</span> S second;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Pair</span><span class="params">(T first, S second)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.first = first;</span><br><span class="line">        <span class="keyword">this</span>.second = second;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getFirst</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> S <span class="title">getSecond</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> second;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="간선-리스트"><a href="#간선-리스트" class="headerlink" title="간선 리스트"></a>간선 리스트</h2><p>인접 리스트와 인접 행렬을 전부 사용하지 않는 경우(STL이나 Collection을 사용할 수 없는 경우) 사용합니다.</p>
+<p>간선의 갯수만큼의 크기를 가지는 <code>e[][]</code> 배열에 간선을 모두 저장합니다. 그리고 그 간선의 앞 정점을 기준으로 정렬합니다.</p>
+<p>그리고 cnt[] 배열에 정점이 어느 범위의 간선을 가지고 있는지도 저장해서 꺼내서 활용합니다.</p>
+<p><img src="/images/data/graph-code.png" alt=""></p>
+<p>입력</p>
+<blockquote>
+<p>6 8</p>
+<p>1 2</p>
+<p>1 5</p>
+<p>2 3</p>
+<p>2 4</p>
+<p>2 5</p>
+<p>5 4</p>
+<p>4 3</p>
+<p>4 6</p>
+</blockquote>
+<p>위와 같은 입력에서 간선 리스트는 아래와 같은 코드로 구현됩니다.</p>
+<p>하나의 배열에는 간선 전체를 저장하고, 각각 정점에 연결된 간선의 범위는 cnt 배열의 숫자를 통해  알 수 있습니다.</p>
+<p>1번 정점에 연결된 간선은</p>
+<p>cnt[i-1] ~ cnt[i]까지에 저장된 값. 즉 cnt[0] ~ cnt[1] 까지의 값</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=cnt[<span class="number">0</span>]; i&lt;cnt[<span class="number">1</span>]; i++) &#123;</span><br><span class="line">	<span class="keyword">int</span> x=graph[i][<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">int</span> y=graph[i][<span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span>[][] getGraph() &#123;</span><br><span class="line">    Scanner sc = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">    <span class="keyword">int</span> v = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span> e = sc.nextInt();</span><br><span class="line">    <span class="keyword">int</span> [][] graph = <span class="keyword">new</span> <span class="keyword">int</span>[e][<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">int</span> cnt[] = <span class="keyword">new</span> <span class="keyword">int</span>[v];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;e; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> x = sc.nextInt();</span><br><span class="line">        <span class="keyword">int</span> y = sc.nextInt();</span><br><span class="line">        graph[i][<span class="number">0</span>] = x;</span><br><span class="line">        graph[i][<span class="number">1</span>] = y;</span><br><span class="line">    &#125;</span><br><span class="line">    Arrays.sort(graph, Comparator.comparingInt((<span class="keyword">int</span>[] g1) -&gt; g1[<span class="number">0</span>]).thenComparingInt((<span class="keyword">int</span>[] g2) -&gt; g2[<span class="number">0</span>]));</span><br><span class="line">    <span class="comment">//        Arrays.sort(graph, (g1, g2) -&gt; &#123;</span></span><br><span class="line">    <span class="comment">//           return g1[0] - g2[0];</span></span><br><span class="line">    <span class="comment">//        &#125;);</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;e; i++) &#123;</span><br><span class="line">        cnt[graph[i][<span class="number">0</span>]] += <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;v; i++) &#123;</span><br><span class="line">        cnt[i] = cnt[i-<span class="number">1</span>] + cnt[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> graph;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>그래프 탐색의 목적은 모든 정점을 다 방문하는 것. 아래의 두가지 방법이 있습니다.</p>
+<h2 id="그래프의-탐색-깊이-우선-탐색-DFS"><a href="#그래프의-탐색-깊이-우선-탐색-DFS" class="headerlink" title="그래프의 탐색 - 깊이 우선 탐색(DFS)"></a>그래프의 탐색 - 깊이 우선 탐색(DFS)</h2><p>Depth First Search 깊이 우선, 최대한 깊숙히 탐색 Stack 사용</p>
+<p>스택을 이용해 갈 수 있는 만큼 최대한 많이 깊게 가고, 갈 수 없으면 이전에 탐색한 정점으로 돌아가 탐색을 진행한다.</p>
+<p>하나의 그래프에서 탐색을 하기 위해 아래와 같은 공간이 필요하다.</p>
+<ul>
+<li>방문 여부를 저장할 check 배열</li>
+<li>스택(재귀 호출 사용)</li>
+</ul>
+<p><img src="/images/data/dfs.png" alt=""></p>
+<blockquote>
+<p>Step 1</p>
+</blockquote>
+<p>시작 정점을 1로 가정하고, 위의 그래프에서 DFS를 시작하면 스택에 정점 1을 넣고, 해당 정점을 방문했으므로 check 배열의 1 요소를 true로 변경합니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">index</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1</code></p>
+<p><code>Stack : 1</code></p>
+<blockquote>
+<p>Step 2</p>
+</blockquote>
+<p>그 다음, 1정점과 연결된 2 정점을 방문합니다.</p>
+<p>현재 스택 최상단의 요소는 2, check 배열에 2의 값도 방문했음을 체크합니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">index</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2</code></p>
+<p><code>Stack 1, 2</code></p>
+<blockquote>
+<p>Step 3</p>
+</blockquote>
+<p>다음은 정점 2와 연결된 정점 3을 방문합니다. 마찬가지로 방문 여부를 체크합니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2 3</code></p>
+<p><code>Stack : 1 2 3</code></p>
+<blockquote>
+<p>Step 4</p>
+</blockquote>
+<p>다음 정점 3과 연결된 정점 4를 방문합니다. 마찬가지로 방문 여부 체크</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2 3 4</code></p>
+<p><code>Stack : 1 2 3 4</code></p>
+<blockquote>
+<p>Step 5</p>
+</blockquote>
+<p>다음은 정점 4와 연결된 정점 5를 방문합니다. 마찬가지로 방문 여부 체크</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">False</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2 3 4 5</code></p>
+<p><code>Stack : 1 2 3 4 5</code></p>
+<blockquote>
+<p>Step 6</p>
+</blockquote>
+<p>그 다음에 정점 5에서 다음으로 갈 수 있는 정점이 없으므로, 스택에서 정점 5를 제거하고 정점 4로 돌아간다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2 3 4 5</code></p>
+<p><code>Stack : 1 2 3 4</code></p>
+<blockquote>
+<p>Step 7</p>
+</blockquote>
+<p>다음 정점 4에서 갈 수 있는 정점 6으로 이동합니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2 3 4 5 6</code></p>
+<p><code>Stack : 1 2 3 4 6</code></p>
+<blockquote>
+<p>Step 8</p>
+</blockquote>
+<p>이제 6에서 갈 수 있는 곳이 없고, check 배열도 모두 채워졌기 때문에 스택에서 하나씩 요소를 제거하면 됩니다.</p>
+<p><code>Stack : 1 2 3 4</code></p>
+<p><code>Stack : 1 2 3</code></p>
+<p><code>Stack : 1 2</code></p>
+<p><code>Stack : 1</code></p>
+<p>이제 스택에서 모든 정점이 빠지고, DFS 탐색이 종료됩니다.</p>
+<p>위에서 봤듯, 계속 depth를 따라 깊이 우선으로 탐색을 하고, 탐색할 정점이 없으면 이전 정점으로 돌아갑니다. java 코드로 작성하면 재귀호출을 이용해서 아래처럼 구현할 수 있습니다.</p>
+<ul>
+<li>인접행렬을 이용한 DFS 코드</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    check[x] = <span class="keyword">true</span>;</span><br><span class="line">    System.out.println(x)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (graph[x][i] == <span class="number">1</span> &amp;&amp; check[i] == <span class="keyword">false</span>) &#123;</span><br><span class="line">                dfs(i);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>인접 리스트를 이용한 DFS 코드</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    check[x] = <span class="keyword">true</span>;</span><br><span class="line">    System.out.println(x)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;=graph.get(x).size(); i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> y = graph.get(x).get(i);</span><br><span class="line">            <span class="keyword">if</span> (check[y] == <span class="keyword">false</span>) &#123;</span><br><span class="line">                dfs(y);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="그래프의-탐색-너비-우선-탐색-BFS"><a href="#그래프의-탐색-너비-우선-탐색-BFS" class="headerlink" title="그래프의 탐색 - 너비 우선 탐색(BFS)"></a>그래프의 탐색 - 너비 우선 탐색(BFS)</h2><p>Breadth First Search 너비 우선 탐색, 너비 우선은 Queue를 사용합니다.</p>
+<p>모든 가중치가 1인 경우 최단거리를 찾는다. 가중치가 1일 때 BFS를 이용해 최단거리를 찾을 수 있다. 큐를 이용해 지금 위치에서 갈 수 있는 정점을 모두 큐에 넣는 방식</p>
+<p><img src="/images/data/dfs.png" alt=""></p>
+<blockquote>
+<p>Step 1</p>
+</blockquote>
+<p>정점 1에서 시작합니다.</p>
+<p>큐에 정점 1을 넣고, 정점 1 방문을 체크합니다.</p>
+<p>그리고 현재 정점 1에서 인접한 2, 5 를 큐에 넣고 2, 5방문 여부를 체크합니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">False</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1</code></p>
+<p><code>Queue : 1, 2, 5</code></p>
+<blockquote>
+<p>Step 2</p>
+</blockquote>
+<p>큐에서 정점 1을 제거하고, 정점 2를 방문합니다.</p>
+<p>그리고 인접한 3을 큐에 넣고, 방문 여부를 체크합니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">False</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2</code></p>
+<p><code>Queue : 2 5 3</code></p>
+<blockquote>
+<p>Step 3</p>
+</blockquote>
+<p>큐에서 정점 2을 제거하고, 정점 5를 방문합니다. 그리고 인접한 정점 4를 큐에 넣고, 방문 여부를 체크합니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2 5</code></p>
+<p><code>Queue : 5 3 4</code></p>
+<blockquote>
+<p>Step 4</p>
+</blockquote>
+<p>큐에서 정점 5를 제거하고, 정점 3을 방문합니다. 여기서는 인접한 정점들을 모두 방문해서 따로 큐에 추가할 정점은 없습니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">false</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2 5 3</code></p>
+<p><code>Queue : 3 4</code></p>
+<blockquote>
+<p>Step 5</p>
+</blockquote>
+<p>정점 3을 제거하고, 정점 4에 방문합니다. 이제 4에 인접한 6을 큐에 추가하고 방문 여부를 체크합니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2 5 3 4</code></p>
+<p> <code>Queue : 4 6</code></p>
+<blockquote>
+<p>Step 6</p>
+</blockquote>
+<p>정점 4를 큐에서 제거하고, 마지막 정점 6을 방문합니다. 그리고 큐에 마지막 남은 6이 제거되고 더이상 탐색할 정점이 없으므로 종료합니다.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">i</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+<th style="text-align:center">4</th>
+<th style="text-align:center">5</th>
+<th style="text-align:center">6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">check[i]</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+<td style="text-align:center">true</td>
+</tr>
+</tbody>
+</table>
+<p><code>방문 순서 : 1 2 5 3 4 6</code></p>
+<p><code>Queue : 6</code></p>
+<ul>
+<li>인접 리스트를 이용한 BFS 코드</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> start)</span> </span>&#123;</span><br><span class="line">        Queue&lt;Integer&gt; bfsQueue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        bfsQueue.add(start);</span><br><span class="line">        check[start] = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">while</span>(!bfsQueue.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">int</span> v = bfsQueue.remove();</span><br><span class="line">            System.out.print(v + <span class="string">" "</span>);</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> e : graph.get(v)) &#123;</span><br><span class="line">                <span class="keyword">if</span>(check[e] == <span class="keyword">false</span>) &#123;</span><br><span class="line">                    check[e] = <span class="keyword">true</span>;</span><br><span class="line">                    bfsQueue.add(e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="참고"><a href="#참고" class="headerlink" title="참고"></a>참고</h4><ul>
+<li>백준 알고리즘 강의 자료</li>
+</ul>
 </div><div class="article__tags"><a class="article__tags__item" href="/tags/Graph/">Graph</a></div><div class="article__author" itemscope itemprop="author" itemtype="https://schema.org/Person"><img class="article__author__image" src="/images/profile.png" alt="KyuNam"><a class="article__author__link" title="About KyuNam" rel="author">KyuNam</a><p class="article__author__desc">dev log</p><div class="article__author__socials"><a class="article__author__socials__item" href="https://github.com/tramyu" title="github" target="_blank"><i class="fa fa-github"></i></a><a class="article__author__socials__item" href="https://www.facebook.com/xmfpes" title="facebook" target="_blank"><i class="fa fa-facebook"></i></a><a class="article__author__socials__item" href="https://www.linkedin.com/feed/" title="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a><a class="article__author__socials__item" href="https://www.instagram.com/" title="instagram" target="_blank"><i class="fa fa-instagram"></i></a><a class="article__author__socials__item" href="/atom.xml" title="rss" target="_blank"><i class="fa fa-rss"></i></a></div><meta itemprop="name" content="KyuNam"></div><div class="sharer" id="sharer"><div class="sharer-inner"><div class="sharer__right"><button class="sharer__item" id="sharer-facebook"><i class="fa fa-facebook-official"></i></button><button class="sharer__item" id="sharer-twitter"><i class="fa fa-twitter"></i></button><button class="sharer__item" id="sharer-pinterest"><i class="fa fa-pinterest"></i></button><button class="sharer__item" id="sharer-pocket"><i class="fa fa-get-pocket"></i></button></div></div></div><!-- Disqus Code--><div id="disqus_thread"></div><script>(function() {
   var d = document, s = d.createElement('script');
   s.src = '//kyunam-disqus-com.disqus.com/embed.js';
   s.setAttribute('data-timestamp', +new Date());
   (d.head || d.body).appendChild(s);
-})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-04-20T16:09:55.000Z"><meta itemprop="articleBody" content="그래프는 자료구조의 일종입니다. 실생활에서 예를 들자면 지하철에서 역은 정점(Vertex), 간선은 역 사이, 도로는 간선, 사거리나 교차로가 정점, 페이스북을 예로 들자면 사람이 정점, 친구 관계 사이에 간선이 연결되게 됩니다.
+})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-04-22T11:57:38.586Z"><meta itemprop="articleBody" content="그래프는 자료구조의 일종입니다. 실생활에서 예를 들자면 지하철에서 역은 정점(Vertex), 간선은 역 사이, 도로는 간선, 사거리나 교차로가 정점, 페이스북을 예로 들자면 사람이 정점, 친구 관계 사이에 간선이 연결되게 됩니다.
 
 정점(Node, Vertex)
 간선(Edge) 정점간의 관계를 나타낸다.
 
-G = (V, E) 형태로..."><meta itemprop="url" content="http://yoursite.com/data/algorithm-graph/"><meta itemprop="mainEntityOfPage" content="http://yoursite.com/data/algorithm-graph/"><div itemscope itemtype="https://schema.org/Organization" itemprop="publisher"><meta itemprop="name" content="Devlog"><div itemscope itemprop="logo" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="http://yoursite.com/images/internet.png"></div></div><div itemscope itemtype="https://schema.org/ImageObject" itemprop="image"><meta itemprop="contentUrl" content="http://yoursite.com/images/data/graph.png"><meta itemprop="url" content="http://yoursite.com/images/data/graph.png"><meta itemprop="width" content="1280"><meta itemprop="height" content="720"></div></article><section class="related-posts"><h3>Related posts</h3><div class="related-posts__item__wrapper"><a class="related-posts__item" href="/data/algorithm-graph-code/"><div class="related-posts__item__background" style="background-image:url('/images/data/graph.png');"></div><div class="related-posts__item__overlay"></div><span class="related-posts__item__title">자료구조 - Graph 코드로 구현해보기</span></a></div><div class="related-posts__item__wrapper"><a class="related-posts__item" href="/algorithm/algorithm-02/"><div class="related-posts__item__background" style="background-image:url('/images/algorithm/algorithm.png');"></div><div class="related-posts__item__overlay"></div><span class="related-posts__item__title">N보다 작은 짝수 피보나치 수의 합</span></a></div><div class="related-posts__item__wrapper"><a class="related-posts__item" href="/algorithm/algorithm-04/"><div class="related-posts__item__background" style="background-image:url('/images/algorithm/algorithm.png');"></div><div class="related-posts__item__overlay"></div><span class="related-posts__item__title">Codility 2-2 OddOccurrencesInArray</span></a></div></section></div></div></div><footer id="footer"><div class="widgets"><div class="widgets-inner"><!-- Jade doesn't support dynamic inclusion with `each`.--><!-- So, I just hard coded the file names that will be included.--><div class="widgets__item"><h3 class="widgets__item__heading">Recent posts</h3><ul class="recent-posts"><li class="recent-posts__item"><a href="/algorithm/algorithm-13/">Codility 4-4 MaxCounters</a></li><li class="recent-posts__item"><a href="/java/design-pattern/design-pattern-01/">Java 디자인 패턴 01 - Abstract Factory Pattern</a></li><li class="recent-posts__item"><a href="/data/algorithm-graph/">자료구조 - Graph</a></li><li class="recent-posts__item"><a href="/data/algorithm-graph-code/">자료구조 - Graph 코드로 구현해보기</a></li><li class="recent-posts__item"><a href="/algorithm/algorithm-12/">Codility 4-3 MissingInteger</a></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Categories</h3><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/">Backend</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/">Java</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/DesignPattern/">DesignPattern</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/Hexo/">Hexo</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Algorithm/">Algorithm</a><span class="category-list-count">13</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Datastructure/">Datastructure</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Javascript/">Javascript</a><span class="category-list-count">2</span></li></ul></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Tag cloud</h3><div class="tag-cloud"><a href="/tags/AbstractFactory/" style="font-size: 0.75rem;">AbstractFactory</a> <a href="/tags/Algorithm/" style="font-size: 1.5rem;">Algorithm</a> <a href="/tags/Graph/" style="font-size: 1.13rem;">Graph</a> <a href="/tags/Hexo/" style="font-size: 0.75rem;">Hexo</a> <a href="/tags/Java/" style="font-size: 1.13rem;">Java</a> <a href="/tags/Javascript/" style="font-size: 1.13rem;">Javascript</a></div></div></div></div><p class="copyright"><small>© 2018 KyuNam<br>Powered by <a href="https://hexo.io" rel="external" target="_blank">Hexo</a>, Theme by <a href="https://github.com/hyunseob" rel="external" target="_blank">HyunSeob</a></small></p></footer><script src="/js/sharer.min.js"></script></body></html>
+G = (V, E) 형태로..."><meta itemprop="url" content="http://yoursite.com/data/algorithm-graph/"><meta itemprop="mainEntityOfPage" content="http://yoursite.com/data/algorithm-graph/"><div itemscope itemtype="https://schema.org/Organization" itemprop="publisher"><meta itemprop="name" content="Devlog"><div itemscope itemprop="logo" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="http://yoursite.com/images/internet.png"></div></div><div itemscope itemtype="https://schema.org/ImageObject" itemprop="image"><meta itemprop="contentUrl" content="http://yoursite.com/images/data/graph.png"><meta itemprop="url" content="http://yoursite.com/images/data/graph.png"><meta itemprop="width" content="1280"><meta itemprop="height" content="720"></div></article><section class="related-posts"><h3>Related posts</h3><div class="related-posts__item__wrapper"><a class="related-posts__item" href="/algorithm/algorithm-12/"><div class="related-posts__item__background" style="background-image:url('/images/algorithm/algorithm.png');"></div><div class="related-posts__item__overlay"></div><span class="related-posts__item__title">Codility 4-3 MissingInteger</span></a></div><div class="related-posts__item__wrapper"><a class="related-posts__item" href="/algorithm/algorithm-02/"><div class="related-posts__item__background" style="background-image:url('/images/algorithm/algorithm.png');"></div><div class="related-posts__item__overlay"></div><span class="related-posts__item__title">N보다 작은 짝수 피보나치 수의 합</span></a></div><div class="related-posts__item__wrapper"><a class="related-posts__item" href="/algorithm/algorithm-03/"><div class="related-posts__item__background" style="background-image:url('/images/algorithm/algorithm.png');"></div><div class="related-posts__item__overlay"></div><span class="related-posts__item__title">Codility 3-1 TapeEquilibrium</span></a></div></section></div></div></div><footer id="footer"><div class="widgets"><div class="widgets-inner"><!-- Jade doesn't support dynamic inclusion with `each`.--><!-- So, I just hard coded the file names that will be included.--><div class="widgets__item"><h3 class="widgets__item__heading">Recent posts</h3><ul class="recent-posts"><li class="recent-posts__item"><a href="/algorithm/algorithm-15/">백준 온라인 저지 - 연결 요소의 개수</a></li><li class="recent-posts__item"><a href="/algorithm/algorithm-14/">백준 온라인 저지 - DFS와 BFS</a></li><li class="recent-posts__item"><a href="/java/design-pattern/design-pattern-01/">Java 디자인 패턴 01 - Abstract Factory Pattern</a></li><li class="recent-posts__item"><a href="/algorithm/algorithm-13/">Codility 4-4 MaxCounters</a></li><li class="recent-posts__item"><a href="/data/algorithm-graph/">자료구조 - Graph</a></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Categories</h3><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/">Backend</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/">Java</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/DesignPattern/">DesignPattern</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/Hexo/">Hexo</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Algorithm/">Algorithm</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Datastructure/">Datastructure</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Javascript/">Javascript</a><span class="category-list-count">2</span></li></ul></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Tag cloud</h3><div class="tag-cloud"><a href="/tags/AbstractFactory/" style="font-size: 0.75rem;">AbstractFactory</a> <a href="/tags/Algorithm/" style="font-size: 1.5rem;">Algorithm</a> <a href="/tags/Graph/" style="font-size: 0.75rem;">Graph</a> <a href="/tags/Hexo/" style="font-size: 0.75rem;">Hexo</a> <a href="/tags/Java/" style="font-size: 1.13rem;">Java</a> <a href="/tags/Javascript/" style="font-size: 1.13rem;">Javascript</a></div></div></div></div><p class="copyright"><small>© 2018 KyuNam<br>Powered by <a href="https://hexo.io" rel="external" target="_blank">Hexo</a>, Theme by <a href="https://github.com/hyunseob" rel="external" target="_blank">HyunSeob</a></small></p></footer><script src="/js/sharer.min.js"></script></body></html>
