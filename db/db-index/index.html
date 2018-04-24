@@ -1,0 +1,286 @@
+<!DOCTYPE html><html lang="kr"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MySQL tuning | Devlog</title><link rel="stylesheet" href="/libs/spoqa-han-sans-kr/css/SpoqaHanSans-kr.css"><link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="/css/highlights/dracula.css"><link rel="canonical" href="http://yoursite.com/db/db-index/"/>
+<meta name="description" content="DB 사전 지식릴레이션 1 : N 하나의 주문은 여러개의 상품을 가진다. 하나의 주문상품은 반드시 하나의 주문을 가진다. 주문에는 주문상품이 없을수도 있다. MySql Doc 조인 Inner Join  1: n target table parent,…">
+<meta name="keywords" content="MySQL,JOIN,DB INDEX">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL tuning">
+<meta property="og:url" content="http://yoursite.com/db/db-index/">
+<meta property="og:site_name" content="Devlog">
+<meta property="og:description" content="DB 사전 지식릴레이션 1 : N 하나의 주문은 여러개의 상품을 가진다. 하나의 주문상품은 반드시 하나의 주문을 가진다. 주문에는 주문상품이 없을수도 있다. MySql Doc 조인 Inner Join  1: n target table parent,…">
+<meta property="og:locale" content="kr">
+<meta property="og:image" content="http://yoursite.com/images/java/java.png">
+<meta property="og:updated_time" content="2018-04-24T08:59:50.208Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL tuning">
+<meta name="twitter:description" content="DB 사전 지식릴레이션 1 : N 하나의 주문은 여러개의 상품을 가진다. 하나의 주문상품은 반드시 하나의 주문을 가진다. 주문에는 주문상품이 없을수도 있다. MySql Doc 조인 Inner Join  1: n target table parent,…">
+<meta name="twitter:image" content="http://yoursite.com/images/java/java.png"><meta property="article:author" content="https://www.facebook.com/xmfpes"><meta property="twitter:label1" content="Published at"><meta property="twitter:data1" content="2018-04-17 21:30:00"><meta property="twitter:label2" content="Written by"><meta property="twitter:data2" content="KyuNam"><link rel="icon" href="/images/internet.png"><link rel="alternate" href="/atom.xml" type="application/atom+xml" title="Devlog"></head><body itemscope itemtype="https://schema.org/WebPage"><nav class="menu" id="menu"><div class="menu-inner"><div class="menu__left-area"><div class="menu__item"><a class="menu__item__link menu__item__link--brand" href="/" title="Home" rel="home"><img class="menu__item__link--brand__image" src="/images/internet.png" alt="Devlog"><span class="menu__item__link--brand__label">Devlog</span></a></div></div><div class="menu__right-area"><div class="menu__item"><a class="menu__item__link" href="/">Home</a></div><div class="menu__item"><a class="menu__item__link" href="/about">About</a></div><div class="menu__item"><a class="menu__item__link" href="/archives">Archives</a></div></div></div></nav><div class="page-background"></div><div class="content-container"><div class="content-outer"><div class="content-inner" itemscope itemtype="https://schema.org/Blog"><article class="article" id="article" itemscope itemtype="https://schema.org/BlogPosting"><h1 class="article__title" itemprop="headline">MySQL tuning</h1><div class="article__meta"><time class="article__meta__time" datetime="2018-04-17T12:30:00.000Z" itemprop="datePublished">2018-04-17 21:30:00</time><div class="article__meta__categories"><a class="article__meta__categories__item" href="/categories/Database/">Database</a><span class="article__meta__categories__separator">></span><a class="article__meta__categories__item" href="/categories/Database/MySQL/">MySQL</a></div></div><div class="article__contents"><img src="/images/java/java.png"/><h2 id="DB-사전-지식"><a href="#DB-사전-지식" class="headerlink" title="DB 사전 지식"></a>DB 사전 지식</h2><p>릴레이션</p>
+<p>1 : N</p>
+<p>하나의 주문은 여러개의 상품을 가진다.</p>
+<p>하나의 주문상품은 반드시 하나의 주문을 가진다.</p>
+<p>주문에는 주문상품이 없을수도 있다.</p>
+<p><a href="https://dev.mysql.com/doc/" target="_blank" rel="noopener">MySql Doc</a></p>
+<h2 id="조인"><a href="#조인" class="headerlink" title="조인"></a>조인</h2><ul>
+<li>Inner Join</li>
+</ul>
+<p>1: n</p>
+<p>target table parent, child면 두개 합친</p>
+<p>target table parent를 하면 child의 결과값이 중복해서 나옴</p>
+<ul>
+<li>Outer Join</li>
+</ul>
+<p>SELECT a.dept_cd, a.dept_nm FROM dept a LEFT OUTER JOIN emp b ON a.dept_Cd = b.dept_Cd</p>
+<p>Parent쪽만 셀렉트할때 작업요소가 더 생김 (중복요소 생김) - 튜닝 대상</p>
+<ul>
+<li>세미 조인</li>
+</ul>
+<p>서브 쿼리와 메인 쿼리 연결 처리를 위한 유사 조인</p>
+<p>IN과 EXISIT</p>
+<p>바깥에 테이블이 있고(외부 테이블) 서브쿼리를 두고 유사 </p>
+<p>세미 조인은 INNER JOIN이나 아우터 조인에서</p>
+<p>SELECT절에 parent만 존재할때</p>
+<ul>
+<li>IN subragog;’’</li>
+<li>EXISTS</li>
+</ul>
+<p>semi join materialization</p>
+<p>duplicated without</p>
+<ul>
+<li>Anti JOIN</li>
+</ul>
+<p><code>NOT IN</code></p>
+<p><code>NOT EXISTS</code></p>
+<p>LEFT OUTER JOIN …ON … WHERE B.key is null</p>
+<p>from parent, parent만 조회를 하면 세미 조인</p>
+<p>1: N을 1:1처럼 처리하려면 세미조인ㅇㅇㅇㅇ</p>
+<p>m:n 크로스조인 - 쿼리에 나타나면 잘못된 경우</p>
+<h2 id="조인-방식"><a href="#조인-방식" class="headerlink" title="조인 방식"></a>조인 방식</h2><h3 id="Nested-Loop-Join"><a href="#Nested-Loop-Join" class="headerlink" title="Nested Loop Join"></a>Nested Loop Join</h3><p>MySQL에서 지원하는 유일한 조인</p>
+<p>먼저 처리되는 테이블 테이블 먼저 처리후, 다음 테이블</p>
+<p>먼저 처리하는 테이블에 따라 비용이</p>
+<p>조인 연결고리 컬럼에 인덱스가 없으면 full table scan….</p>
+<p>조인 조건 간에는 인덱스가 항상 필요(ON a.dept_cd = b.dept_cd) ON 뒤 조건이면 인덱스 필수</p>
+<p>hash나 소트머지가 없어서 ..MySQL 구리다. </p>
+<p>bi </p>
+<p>부서, 사원은 인덱스 프라이머리키 하나만</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">SELECT 부서코드, 부서명, 사원번호, 사원명</span><br><span class="line"></span><br><span class="line">FROM 부서 A, 사원 B</span><br><span class="line"></span><br><span class="line"><span class="keyword">where</span> a.부서코드 = b.부서코드</span><br><span class="line"></span><br><span class="line">부서코드는 인덱스가 없어서 full table scan</span><br></pre></td></tr></table></figure>
+<p>조인 조건에 인덱스</p>
+<p>부서, 사원</p>
+<p>부서 먼저 스캔하면</p>
+<p>40번 스캔</p>
+<p>사원 먼저 하면</p>
+<p>10번</p>
+<p>MySQL 조인순서 결정</p>
+<p>MySQL 옵티마이저가 모든 조인 순서에 대한 Cost 계산</p>
+<p>모든 액세스 패스 순서 계산.</p>
+<p>3개의 테이블이 있으면 순서 조합 다 해보고 cost 계산</p>
+<p>1: N 조인 시 튜닝</p>
+<p>select절에 n이 포함되어있다면 상관없지만</p>
+<p>1쪽만 select에 들어있다면.. group by, distinct를 사용하지 않고 semi join 형태로 변경하자.</p>
+<p>스칼라서브쿼리</p>
+<p>데이터 복제여부</p>
+<p>페어런트 3, 차일드 5</p>
+<p>inner는 N</p>
+<p>left outer join = 관게없이 N건</p>
+<p>explain SELECT a.prod_cd, a.prod_nm FROM prod a<br>WHERE NOT EXISTS (SELECT 1 FROM ordr_prod b WHERE a.prod_cd = b.prod_cd AND b.ordr_prod_cnt &gt; 3);</p>
+<p>dependent subquery</p>
+<p>Semi join에서 dependent subquery가 나오면 </p>
+<p>1:N인데 결과셋이 parent로 국한된 경우 세미 조인</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SELECT a.prod_cd, a.prod_nm FROM prod a</span><br><span class="line">INNER JOIN ordr_prod b USING (prod_cd) WHERE b.ordr_prod_cnt = 3;</span><br></pre></td></tr></table></figure>
+<p>innerjoin에서 parent만 from하는데 GROUP BY로 distnint하면 세미 조인 형태로..</p>
+<h2 id="인덱스"><a href="#인덱스" class="headerlink" title="인덱스"></a>인덱스</h2><p>MySQL은 B-Tree형태의 인덱스 구조를 가진다.</p>
+<p>Leaf 노드는 Double Linked List</p>
+<p>Memory 엔진은 Hash Index 지원</p>
+<p>InnoDB 엔진은 B-Tree 구조 기본 Clustered index 구조를 가짐</p>
+<p>Clustered Index Leaf Node에 모든 Row 데이터 저장</p>
+<p>leaf 노드에 모든 데이터가 다 들어있다.</p>
+<p>Non Clusterd Index에서는 Pk 값 참조</p>
+<p>non clusterd index는 clusterd key를 다 가지기 때문에 pk가 커지면 좋지 않다.</p>
+<p>복합 인덱스</p>
+<p>인덱스는 결국 정렬하는것</p>
+<p>select * from ordr where ordr_status_cd = ‘PD’ and ordr_ymdt &gt;= ‘2016-07-01’;</p>
+<p>ordr_status_cd, ordr_ymdt vs ordr_ymdt, ordr_status_cd</p>
+<p>앞의 조건은 4건, 뒤는 14건 + @</p>
+<p>4, 전체</p>
+<p>= 조건이면 뭐가 앞이든 뒤든 상관이 없다.</p>
+<p>range 조건과 = 조건이 있으면 = 조건이 앞에 오는게 무조건 유리하다.</p>
+<p>훑어보는 양이 적도록 조건을 걸어야함</p>
+<p>인덱스를 거는것, 정렬</p>
+<p>후행이 정렬이 안되어있으면 이용할 수 없음</p>
+<p>Equals 조건 좌측, &lt;. &gt; between ramge 혹은 order by, 등은 우측</p>
+<p>조인 연결고리가 없으면 이상한 플랜</p>
+<p>쿼리 조건에서 좌변은 가공하면 안됨 x 우변(상수)는 가능</p>
+<p>select * from cust where ordr_status_cd = 10;</p>
+<p>왼쪽이 문자라서 숫자로 형변환이 일어나고..인덱스를 안탐</p>
+<p>date_time varchar 양방향 형변환 됨(유리한쪽으로) 그래서 date_time = ‘string’도 인덱스를 탄다.</p>
+<h4 id="Covered-Index"><a href="#Covered-Index" class="headerlink" title="Covered Index"></a>Covered Index</h4><p>SELECT 컬럼과 where filter 등이 특정인덱스 구성 컬럼이면</p>
+<p>인덱스만으로 쿼리결과 사용</p>
+<h4 id="Dynamic-query-인덱스-구성"><a href="#Dynamic-query-인덱스-구성" class="headerlink" title="Dynamic query 인덱스 구성"></a>Dynamic query 인덱스 구성</h4><p>select *from document</p>
+<p>where </p>
+<p>N개 검색항목 쿼리조합 2^N승</p>
+<p>[문서제목 = ?] and [문서번호 = ?] and [서비스종류 = ?] and [연관 CI = ?]</p>
+<p>2^4의 쿼리 패턴…인덱스 구성은??</p>
+<p>독립검색 - 번호(unique)로 검색할때 다른건 안 검색하니까 단일 항목 검색 패턴</p>
+<p>order by a asc, b desc 복합 인덱스 안됨</p>
+<p>select * from cust where zip_cd = ‘33342’ order by age asc, rgst_ymdt desc</p>
+<h3 id="3-6-OR"><a href="#3-6-OR" class="headerlink" title="3.6 OR"></a>3.6 OR</h3><p>index<br>구성<br>:<br>idx_ymdt(register_datetime) , idx_buy_cd_ymdt(buy_type_code, register_datetime)</p>
+<p>SELECT*</p>
+<p>  FROM reserve</p>
+<p> WHERE ( buy_type_code =’RESERVE’ OR buy_type_code =’ISSUE’ ) </p>
+<p>   AND register_datetime&gt;= ‘2016-08-01’</p>
+<p>ORDERBYregister_datetime DESC</p>
+<p> LIMIT 30;</p>
+<p>위 쿼리는 idx_ymdt 인덱스를 탐. 근데 복합 인덱스를 타는게 더 좋지 않을까?</p>
+<p>아래처럼 변경</p>
+<p> mysql&gt;explain SELECT *</p>
+<p>​    -&gt;  FROM reserve USE INDEX (idx_buy_cd_ymdt)</p>
+<p>​    -&gt; WHERE ( buy_type_code =’RESERVE’ OR buy_type_code =’ISSUE’ )</p>
+<p>​    -&gt;   AND register_datetime&gt;= ‘2016-08-01’</p>
+<p>​    -&gt; ORDER BY register_datetime DESC</p>
+<p>​    -&gt; LIMIT 10;</p>
+<p>복합 인덱스를 사용한다. 근데 But_type_code는 정렬되어 있지만, 각각의</p>
+<p>RESERVE에서 8월 1일 이후인 거</p>
+<p>ISSUE에서 8월 1일 이후인거 두개에 대해서는 정렬이 되지 않아서</p>
+<p>두개의 register_time을 또 order by해야되기 때문에 File sort가 일어남.(성능 더 안좋아짐)</p>
+<p>### </p>
+<h2 id="Etc"><a href="#Etc" class="headerlink" title="Etc"></a>Etc</h2><p>부정형 비교는 인덱스 X</p>
+<p>값이 10개라 치면</p>
+<p>not in ( 10, 11, 15, 20)보다는 in (나머지 6개)를 써라</p>
+<p>Scalar subquery outer 건수만큼 쿼리실행?</p>
+<p>| Handler_read_rnd_next |<br>1     |</p>
+<p>full table scan 62</p>
+<p>OR도 uniond으로 처리됨</p>
+<p>인덱스 : ( vip_yn, age )</p>
+<p>mysql&gt;explain select * from custwhere age = 25;</p>
+<p>+—-+————-+——-+——+—————+——+———+——+——+————-+</p>
+<p>| id| select_type |table | type | possible_keys |key  | key_len |ref  | rows | Extra       |</p>
+<p>+—-+————-+——-+——+—————+——+———+——+——+————-+</p>
+<p>|  1 | SIMPLE      | cust  | ALL | NULL          | NULL | NULL    | NULL |  61 | Using where |</p>
+<p>+—-+————-+——-+——+—————+——+———+——+——+————-+</p>
+<p>1 rowin set (0.00 sec)</p>
+<p>mysql&gt;  explain select * from custwhere vip_yn in(‘Y’,’N’) and age = 25;</p>
+<p>+—-+————-+——-+——-+—————+————+———+——+——+———————–+</p>
+<p>| id| select_type |table | type  | possible_keys |key        | key_len |ref  | rows | Extra                 |</p>
+<p>+—-+————-+——-+——-+—————+————+———+——+——+———————–+</p>
+<p>|  1 | SIMPLE      | cust  | range | idx_yn_age    | idx_yn_age |5       | NULL |    5 | Using index condition |</p>
+<p>+—-+————-+——-+——-+—————+————+———+——+——+———————–+</p>
+<p>1 rowin set (0.00 sec)</p>
+<p>만약 순서가 (age, vip_yn)이면 age만 해도 인덱스 탐.</p>
+<p>show index from reserve;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">1.다음 쿼리를 튜닝하시오</span><br><span class="line"></span><br><span class="line">select * from reserve where reserve_state_code = &apos;RETURN_COMPLETE&apos;;</span><br><span class="line"></span><br><span class="line">solve</span><br><span class="line"></span><br><span class="line">alter table product add index idx1(product_class_code);</span><br><span class="line"></span><br><span class="line">select * from reserve where reserve_state_code = &apos;RETURN_COMPLETE&apos;;</span><br><span class="line"></span><br><span class="line">explain select * from reserve where reserve_state_code = &apos;RETURN_COMPLETE&apos;;</span><br><span class="line"></span><br><span class="line">type이 ALL로 나온다..인덱스가 없거나 엄청 적거나 둘중 하나다.</span><br><span class="line">인덱스가 없으므로 인덱스 추가</span><br><span class="line"></span><br><span class="line">possible_keys는 인덱스 후보군, key는 사용 인덱스 extra using index condition 인덱스 사용</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">2.다음 쿼리를튜닝하시오</span><br><span class="line"></span><br><span class="line">select * from product where product_class_code = &apos;CONCERT&apos; order by register_datetime;</span><br><span class="line"></span><br><span class="line">solve</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">3.다음 쿼리를 튜닝하시오</span><br><span class="line"></span><br><span class="line">select * from product where register_datetime &lt; &apos;2015-02-25 00:00:00&apos;;</span><br><span class="line"></span><br><span class="line">solve</span><br><span class="line"></span><br><span class="line">4.다음 쿼리를 튜닝하시오(조회기간은무조건 하루)</span><br><span class="line"></span><br><span class="line">select * from product </span><br><span class="line">where register_datetime &gt;= &apos;2015-02-25 00:00:00&apos; and register_datetime &lt; &apos;2015-02-26 00:00:00&apos; </span><br><span class="line">order by product_class_code ;</span><br><span class="line"></span><br><span class="line">solve</span><br><span class="line"></span><br><span class="line">select * from product </span><br><span class="line">where register_datetime &gt;= &apos;2015-02-25 00:00:00&apos; and register_datetime &lt; &apos;2015-02-26 00:00:00&apos; </span><br><span class="line">order by product_class_code;</span><br><span class="line"></span><br><span class="line">선행이 분산되어있고, product_class_code가 후행이라..</span><br></pre></td></tr></table></figure>
+<h2 id="MySQL-옵티마이저"><a href="#MySQL-옵티마이저" class="headerlink" title="MySQL 옵티마이저"></a>MySQL 옵티마이저</h2><p>MsSQL은 파싱을 해두기 때문에</p>
+<p>프로시저를 쓰면 효율이 좋고 빨라지지만..MySQL은 매번 하드파싱이 일어나기 때문에(프로시저를 써도) 프로시저를 쓰면 괜히 트러블 슈팅만 어려워짐..</p>
+<p>Cost based Optimizations</p>
+<p>조인순서 어느걸 먼저 헀을때 빠른지 체크하고 순서를 결정</p>
+<p>Plan refinement </p>
+<p>Order by optimization sorting 회피</p>
+<p>인덱스 변경, desc, 등등을 이용해서</p>
+<p>index condition pushdown 미리 필터할게 없는지 봄</p>
+<ul>
+<li>통계정보</li>
+</ul>
+<p>Cardinality(카디날리티)</p>
+<p>인덱싱된 컬럼의 distinct value 갯수 (primary key면 같을듯)</p>
+<p>통계 정보 샘플링은</p>
+<p>무작위 8페이지(128kb) 통해 통계정보 생성</p>
+<p>남녀구분코드처럼 카디날리티가 작으면 실제보다 크게 나오는 경우.. Unique key는 정확</p>
+<p>예제</p>
+<p>일단은 hall이 1이고, product가 n인데 </p>
+<p>hall의 register_Datetime에 인덱스를 주자.</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">select * from product a, hall b <span class="keyword">where</span> a.hall_id = b.hall_id and b.register_datetime &gt; <span class="string">'2016-07-01'</span>;</span><br><span class="line"></span><br><span class="line">product_id	int(<span class="number">11</span>)	NO	PRI	NULL	auto_increment</span><br><span class="line">product_name	varchar(<span class="number">150</span>)	NO		NULL	</span><br><span class="line">product_class_code	varchar(<span class="number">20</span>)	NO	MUL	NULL	</span><br><span class="line">hall_id	int(<span class="number">11</span>)	NO	MUL	NULL	</span><br><span class="line">place_id	int(<span class="number">11</span>)	NO		NULL	</span><br><span class="line">register_datetime	datetime	NO		CURRENT_TIMESTAMP	</span><br><span class="line">resister_ymd	varchar(<span class="number">8</span>)	NO	MUL	NULL	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">place_id	int(<span class="number">11</span>)	NO		NULL	</span><br><span class="line">hall_id	int(<span class="number">11</span>)	NO	PRI	NULL	auto_increment</span><br><span class="line">hall_name	varchar(<span class="number">300</span>)	NO		NULL	</span><br><span class="line">register_datetime	datetime	NO	MUL	CURRENT_TIMESTAMP	</span><br><span class="line">use_flag	varchar(<span class="number">1</span>)	YES		NULL</span><br></pre></td></tr></table></figure>
+<p>줘도 </p>
+<p>조인의 연결고리가 이상하면 n쪽에서 1로 됨..</p>
+<p>1에서 n으로 가야하는데.</p>
+<p>hall_id 인덱스가 빠졌으니 추가</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table product add index idx(hall_id);</span><br></pre></td></tr></table></figure>
+<p>근데 그래도 안됨.</p>
+<p>좌변이 varchar이라서 varchar가 int로 변환돼서 인덱스를 안탐</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table product <span class="keyword">modify</span> hall_id int not null;</span><br></pre></td></tr></table></figure>
+<h2 id="EXPLAIN-STATEMENT"><a href="#EXPLAIN-STATEMENT" class="headerlink" title="EXPLAIN STATEMENT"></a>EXPLAIN STATEMENT</h2><p>MySQL이 어떻게 쿼리를 실행하는지에 관한 정보를 보여주는 명령어</p>
+<p>5.6.3이전 버전은 SELECT만가능(Update, Delete의 경우 SELECT로 변환하여 수행해야 함)</p>
+<p>5.6.3이후 버전은 SELECT, DELETE, INSERT, UPDATE, REPLACE 가능</p>
+<ul>
+<li>Select_Type</li>
+</ul>
+<p>7)DEPENDENT SUBQUERY: subquery와 동일하나 outer</p>
+<p>explainselect a.prod_nm , </p>
+<p>​                      ( selectcount(*) from ordr_prod bwhere a.prod_cd = b.prod_cd) ordr_prod_cnt fromprod a;</p>
+<p>query에 의존적 a.~~ 바깥의 a에 영향</p>
+<h3 id="Access-type-JOIN-type"><a href="#Access-type-JOIN-type" class="headerlink" title="Access type(JOIN type)"></a>Access type(JOIN type)</h3><p>join type이라고 부르기도 하지만 조인이 없어도 나타남</p>
+<p>system 한개</p>
+<ul>
+<li>eq_ref</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">explain select * from prod a, ordr_prod b where a.prod_cd = b.prod_cd and b.ordr_no = 10;</span><br><span class="line"></span><br><span class="line">1:N order_no = 10때문에 b 먼저 driven 됨</span><br><span class="line">그 뒤에 될때는 eq_ref</span><br><span class="line"></span><br><span class="line">N테이블이 선행으로 드라이빙되고 pk/unique key를 사용하는 경우</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ref</li>
+</ul>
+<p>인덱스로 조인을 하는데 인덱스 매칭되는게 여러건?</p>
+<ul>
+<li>fulltext</li>
+</ul>
+<p>fulltext index 사용</p>
+<ul>
+<li>index(튜닝이 필요함 안좋은 예)</li>
+</ul>
+<p>index 페이지 전체를 읽는다. index full scan 인덱스 페이지를 스캔하는거 제외하고는 ALL과 동일</p>
+<p>index full scan,</p>
+<ul>
+<li>ALL (full table scan…안좋은 예)</li>
+</ul>
+<p>전체 데이터 페이지를 읽는다. 인덱스를 전혀 못 사용함 </p>
+<h3 id="Extra"><a href="#Extra" class="headerlink" title="Extra"></a>Extra</h3><p>옵티마이저가 사용하는 최적화 전략 나타냄</p>
+<p>using join buffer 물리적 정렬</p>
+<p>join 조건이 쿼리에 없는 경우..옵티마이저가 알아서 잘 해준건데 여튼 Join 조건 추가</p>
+<p>using filesort</p>
+<p>full table scan 피하려고 결과셋 temp 생성</p>
+<p>위의 두개가 나오면 무조건 튜닝</p>
+<h4 id="innodb-buffer-pool-vs-query-cache"><a href="#innodb-buffer-pool-vs-query-cache" class="headerlink" title="innodb buffer pool vs query cache"></a>innodb buffer pool vs query cache</h4><p>select를 하면 innodb buffer에 데이터 페이지를 올려두는거고 두개 다름</p>
+<p>query cache 같은 쿼리가 들어왔을때 같은 결과를 반환한다.</p>
+<p>일단 쿼리 캐시는 오히려 메모리 병목을 가져오는 경우가 많아 안 쓰는 추세임.(디스크 성능 향상)</p>
+<p>Extra</p>
+<p>좋다 :  using index(커버링인덱스 인덱스만 사용 데이터셋접근없이),using where(메모리에서필터링)</p>
+<p>나쁘다 :  using filesort, using join buffer</p>
+<p>Reference Type Join</p>
+<p>unique로 잡혀있는 경우 join 조건으로 주면.. 1건만 탐색(eq_ref) 유니크인걸 알아서.</p>
+<p>유니크가 아니면 1건 더 해서 2건, ref 타입</p>
+<p>7 예제</p>
+<p>아래 쿼리 튜닝</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">select a.reserve_no, a.issue_state_code, b.reserve_detail_no, b.total_amount</span><br><span class="line">from reserve a, rsv_dtl b</span><br><span class="line"><span class="keyword">where</span> a.reserve_no = b.reserve_no</span><br><span class="line">and   a.issue_datetime &gt;= <span class="string">'2016-08-04 00:00:00'</span>;</span><br><span class="line"></span><br><span class="line">explain select a.reserve_no, a.issue_state_code, b.reserve_detail_no, b.total_amount</span><br><span class="line">from reserve a, rsv_dtl b</span><br><span class="line"><span class="keyword">where</span> a.reserve_no = b.reserve_no</span><br><span class="line">and   a.issue_datetime &gt;= <span class="string">'2016-08-04 00:00:00'</span>;</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>	SIMPLE	b	ALL	NULL	NULL	NULL	NULL	<span class="number">5277415</span>	NULL</span><br><span class="line"><span class="number">1</span>	SIMPLE	a	eq_ref	PRIMARY,idx2	PRIMARY	<span class="number">4</span>	edu11.b.reserve_no	<span class="number">1</span>	Using <span class="keyword">where</span></span><br><span class="line"></span><br><span class="line">위를 보고 eq_ref 는 프라이머리 키를 이용, a가 <span class="number">1</span>이고 b가 n이 된다.</span><br></pre></td></tr></table></figure>
+<p>issue_datetime 인덱스 추가.</p>
+<p>근데 뒤의 issue_datetime 조건을 먼저 타면 좋겠는데 안 탄다 그럼 앞의 조인 연결고리가 잘못된거</p>
+<p>reserve_no 인덱스가 없을거, 앞에것도 추가하면 이제 a 먼저 driven 되고 A</p>
+<p>선행 테이블</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>	SIMPLE	b	ALL	NULL	NULL	NULL	NULL	<span class="number">5277415</span>	NULL</span><br><span class="line"><span class="number">1</span>	SIMPLE	a	eq_ref	PRIMARY,idx2	PRIMARY	<span class="number">4</span>	edu11.b.reserve_no	<span class="number">1</span>	Using <span class="keyword">where</span></span><br></pre></td></tr></table></figure>
+<p>8번</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">explain select a.reserve_no, a.issue_state_code, b.reserve_detail_no, b.total_amount, </span><br><span class="line">      (select aa.hall_name from hall aa <span class="keyword">where</span> c.hall_id = aa.hall_id) <span class="keyword">as</span> hall_name</span><br><span class="line">from reserve a, reserve_detail b, product c, ticket d</span><br><span class="line"><span class="keyword">where</span> a.reserve_no = b.reserve_no</span><br><span class="line">and   a.product_id = c.product_id</span><br><span class="line">and   b.reserve_no = d.reserve_no</span><br><span class="line">and   b.reserve_detail_no = d.reserve_detail_no</span><br><span class="line">and   b.register_datetime &gt;= <span class="string">'2016-08-01 00:00:00'</span>;</span><br><span class="line"></span><br><span class="line">alter table reserve_detail add index idx1(register_datetime);</span><br><span class="line"></span><br><span class="line">alter table ticket add index idx1(reserve_no, reserve_detail_no);</span><br></pre></td></tr></table></figure>
+<p>9번</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">select a.product_id, a.product_name, b.reserve_no, c.reserve_detail_no </span><br><span class="line">from ( select aa.product_id, aa.product_name </span><br><span class="line">         from product aa </span><br><span class="line">        <span class="keyword">where</span> aa.product_id <span class="keyword">in</span> ( select distinct bb.product_id </span><br><span class="line">                                  from product_inner_channel bb </span><br><span class="line">                                 <span class="keyword">where</span> bb.channel_id = <span class="number">14</span> )</span><br><span class="line">      ) a, reserve b, reserve_detail c </span><br><span class="line"><span class="keyword">where</span> a.product_id = b.product_id </span><br><span class="line">and b.reserve_no = c.reserve_no</span><br><span class="line">and b.issue_datetime &gt;= <span class="string">'2016-08-04 00:00:00'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">1</span>	PRIMARY	b	range	PRIMARY,idx2,idx3	idx2	<span class="number">6</span>	NULL	<span class="number">6643</span>	Using index condition</span><br><span class="line"><span class="number">1</span>	PRIMARY	c	ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.b.reserve_no	<span class="number">1</span>	Using index</span><br><span class="line"><span class="number">1</span>	PRIMARY	&lt;derived2&gt;	ref	&lt;auto_key<span class="number">0</span>&gt;	&lt;auto_key<span class="number">0</span>&gt;	<span class="number">4</span>	edu11.b.product_id	<span class="number">10</span>	NULL</span><br><span class="line"><span class="number">2</span>	DERIVED	aa	ALL	PRIMARY	NULL	NULL	NULL	<span class="number">4079</span>	NULL</span><br><span class="line"><span class="number">2</span>	DERIVED	bb	eq_ref	PRIMARY	PRIMARY	<span class="number">8</span>	edu11.aa.product_id,const	<span class="number">1</span>	Using index</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">explain extended select a.product_id, a.product_name, b.reserve_no, c.reserve_detail_no </span><br><span class="line">from ( select aa.product_id, aa.product_name </span><br><span class="line">         from product aa </span><br><span class="line">        <span class="keyword">where</span> aa.product_id <span class="keyword">in</span> ( select distinct bb.product_id </span><br><span class="line">                                  from product_inner_channel bb </span><br><span class="line">                                 <span class="keyword">where</span> bb.channel_id = <span class="number">14</span> )</span><br><span class="line">      ) a, reserve b, reserve_detail c </span><br><span class="line"><span class="keyword">where</span> a.product_id = b.product_id </span><br><span class="line">and b.reserve_no = c.reserve_no</span><br><span class="line">and b.issue_datetime &gt;= <span class="string">'2016-08-04 00:00:00'</span>;</span><br><span class="line"></span><br><span class="line">show warnings;</span><br><span class="line"></span><br><span class="line">warning 확인..하고 뭔가 이상한</span><br><span class="line"></span><br><span class="line">explain select aa.product_id, aa.product_name </span><br><span class="line">         from product aa </span><br><span class="line">        <span class="keyword">where</span> aa.product_id <span class="keyword">in</span> ( select distinct bb.product_id </span><br><span class="line">                                  from product_inner_channel bb </span><br><span class="line">                                 <span class="keyword">where</span> bb.channel_id = <span class="number">14</span> );</span><br><span class="line">                                 </span><br><span class="line">해본다음에 이상한 결과를 보고</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>	SIMPLE	aa	ALL	PRIMARY	NULL	NULL	NULL	<span class="number">4079</span>	NULL</span><br><span class="line"><span class="number">1</span>	SIMPLE	bb	eq_ref	PRIMARY	PRIMARY	<span class="number">8</span>	edu11.aa.product_id,const	<span class="number">1</span>	Using index</span><br><span class="line"></span><br><span class="line">bb가 N이라서 n이 먼저 되어야 할 것 같은데..보고</span><br><span class="line"></span><br><span class="line">alter table product_inner_channel add index idx1(channel_id); 에 index 건다.</span><br><span class="line"></span><br><span class="line">그럼</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>	SIMPLE	bb	ref	PRIMARY,idx1	idx1	<span class="number">4</span>	const	<span class="number">203</span>	Using index</span><br><span class="line"><span class="number">1</span>	SIMPLE	aa	eq_ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.bb.product_id	<span class="number">1</span>	NULL</span><br><span class="line"></span><br><span class="line">정상적으로 변경됨</span><br><span class="line"></span><br><span class="line">explain select distinct bb.product_id </span><br><span class="line">                                  from product_inner_channel bb </span><br><span class="line">                                 <span class="keyword">where</span> bb.channel_id = <span class="number">14</span>;</span><br></pre></td></tr></table></figure>
+<p>id가 같은건 서로 대등한 관계.</p>
+<p>2번</p>
+<p>( select aa.product_id, aa.product_name<br>         from product aa<br>        where aa.product_id in ( select distinct bb.product_id<br>                                  from product_inner_channel bb<br>                                 where bb.channel_id = 14 )<br>      )</p>
+<p>11번</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">select e.hall_name, f.place_name, d.product_id, d.product_name, a.reserve_no, b.reserve_detail_no, c.issue_datetime</span><br><span class="line">from reserve a, reserve_detail b, ticket c, product d, hall e, place f</span><br><span class="line"><span class="keyword">where</span> a.reserve_no = b.reserve_no</span><br><span class="line">and a.issue_state_code = <span class="string">'ISSUE'</span></span><br><span class="line">and b.reserve_no = c.reserve_no</span><br><span class="line">and b.reserve_detail_no = c.reserve_detail_no</span><br><span class="line">and e.place_id = f.place_id</span><br><span class="line">and d.hall_id = e.hall_id</span><br><span class="line">and d.place_id = f.place_id</span><br><span class="line">and c.issue_state_code = <span class="string">'ISSUE'</span></span><br><span class="line">and c.issue_datetime &lt;= <span class="string">'2016-04-30'</span> and c.issue_datetime &lt; <span class="string">'2016-05-01'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="number">1</span>	SIMPLE	a	ALL	PRIMARY	NULL	NULL	NULL	<span class="number">1267744</span>	Using <span class="keyword">where</span></span><br><span class="line"><span class="number">1</span>	SIMPLE	b	ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.a.reserve_no	<span class="number">1</span>	Using index</span><br><span class="line"><span class="number">1</span>	SIMPLE	c	ref	idx1	idx1	<span class="number">8</span>	edu11.a.reserve_no,edu11.b.reserve_detail_no	<span class="number">1</span>	Using <span class="keyword">where</span></span><br><span class="line"><span class="number">1</span>	SIMPLE	d	ALL	idx4	NULL	NULL	NULL	<span class="number">4079</span>	Using join buffer (Block Nested Loop)</span><br><span class="line"><span class="number">1</span>	SIMPLE	e	eq_ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.d.hall_id	<span class="number">1</span>	Using <span class="keyword">where</span></span><br><span class="line"><span class="number">1</span>	SIMPLE	f	eq_ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.d.place_id	<span class="number">1</span>	NULL</span><br><span class="line"></span><br><span class="line">alter table reserve add index idx5(issue_state_code);</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>	SIMPLE	a	ref	PRIMARY,idx5	idx5	<span class="number">83</span>	const	<span class="number">633872</span>	Using <span class="keyword">where</span>; Using index</span><br><span class="line"><span class="number">1</span>	SIMPLE	b	ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.a.reserve_no	<span class="number">1</span>	Using index</span><br><span class="line"><span class="number">1</span>	SIMPLE	c	ref	idx1	idx1	<span class="number">8</span>	edu11.a.reserve_no,edu11.b.reserve_detail_no	<span class="number">1</span>	Using <span class="keyword">where</span></span><br><span class="line"><span class="number">1</span>	SIMPLE	d	ALL	idx4	NULL	NULL	NULL	<span class="number">4079</span>	Using join buffer (Block Nested Loop)</span><br><span class="line"><span class="number">1</span>	SIMPLE	e	eq_ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.d.hall_id	<span class="number">1</span>	Using <span class="keyword">where</span></span><br><span class="line"><span class="number">1</span>	SIMPLE	f	eq_ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.d.place_id	<span class="number">1</span>	NULL</span><br></pre></td></tr></table></figure>
+<p>12번</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">select a.member_no, d. member_type_code, a.product_id, a.reserve_no, a.total_payment_amount, a.reserve_state_code</span><br><span class="line">from reserve a, reserve_detail b, product c, member d</span><br><span class="line"><span class="keyword">where</span> a.reserve_no = b.reserve_no</span><br><span class="line">and a.issue_state_code = <span class="string">'ISSUE'</span></span><br><span class="line">and c.product_id = a.product_id</span><br><span class="line">and a.member_no = d.member_no</span><br><span class="line">and a.total_payment_amount &gt;= <span class="number">10000000</span>;</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>	SIMPLE	c	index	PRIMARY	idx4	<span class="number">9</span>	NULL	<span class="number">4079</span>	Using index</span><br><span class="line"><span class="number">1</span>	SIMPLE	a	ref	PRIMARY,idx3	idx3	<span class="number">4</span>	edu11.c.product_id	<span class="number">199</span>	Using <span class="keyword">where</span></span><br><span class="line"><span class="number">1</span>	SIMPLE	d	eq_ref	PRIMARY	PRIMARY	<span class="number">8</span>	edu11.a.member_no	<span class="number">1</span>	Using <span class="keyword">where</span></span><br><span class="line"><span class="number">1</span>	SIMPLE	b	ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.a.reserve_no	<span class="number">1</span>	Using index</span><br><span class="line"></span><br><span class="line">select count(*) from reserve <span class="keyword">where</span> total_payment_amount &gt;= <span class="number">10000000</span>;</span><br><span class="line"><span class="number">25</span></span><br><span class="line">여기다 인덱스 거는게 좋을거 같음. 적으니까</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">alter table reserve add index idx4(total_payment_amount);</span><br><span class="line"></span><br><span class="line">select issue_state_code count(*) from reserve <span class="keyword">group</span> <span class="keyword">by</span> issue_state_code;</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>	SIMPLE	a	range	PRIMARY,idx3,idx4	idx4	<span class="number">5</span>	NULL	<span class="number">25</span>	Using index condition; Using <span class="keyword">where</span></span><br><span class="line"><span class="number">1</span>	SIMPLE	c	eq_ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.a.product_id	<span class="number">1</span>	Using index</span><br><span class="line"><span class="number">1</span>	SIMPLE	d	eq_ref	PRIMARY	PRIMARY	<span class="number">8</span>	edu11.a.member_no	<span class="number">1</span>	Using <span class="keyword">where</span></span><br><span class="line"><span class="number">1</span>	SIMPLE	b	ref	PRIMARY	PRIMARY	<span class="number">4</span>	edu11.a.reserve_no	<span class="number">1</span>	Using index</span><br><span class="line"></span><br><span class="line">일단 튜닝은 잘 됨</span><br><span class="line"></span><br><span class="line">a, d만 셀렉트 하는데 c, b가 무슨 역할을 하는지 봐야 함.</span><br><span class="line"></span><br><span class="line">member는 a랑만 조인</span><br><span class="line"></span><br><span class="line">select a.member_no, d. member_type_code, c.product_id,  원래 c..</span><br><span class="line">reserve에는 Product가 항상 있는데 굳이 c인 product를 조인할 필요가 없다.</span><br><span class="line">b도 없어도 됨</span><br><span class="line"></span><br><span class="line">reserve detail은 중복 제거가 필요한 경우 제거</span><br><span class="line"></span><br><span class="line">중복 결과를 받아야 하면 넣어야 함.</span><br></pre></td></tr></table></figure>
+<p>13번</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">alter table member add index idx1( member_state_code, last_login_date);</span><br><span class="line"></span><br><span class="line">select * </span><br><span class="line">from member </span><br><span class="line"><span class="keyword">where</span>  member_state_code = <span class="string">'STOP'</span> </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> register_datetime</span><br><span class="line">limit <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">explain select * </span><br><span class="line">from member </span><br><span class="line"><span class="keyword">where</span>  member_state_code = <span class="string">'STOP'</span> </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> member_no</span><br><span class="line">limit <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line">어차피 register_datetime이나 member_no이나 auto increment, <span class="keyword">default</span> 같으므로 pk로.</span><br></pre></td></tr></table></figure>
+<p>14</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">14</span>. 아래 내용을 보고 쿼리를 튜닝하시오</span><br><span class="line">(단, 응모시마다 숫자는 리프레쉬)</span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> event_entry set entry_count = ? <span class="keyword">where</span> evend_id = <span class="number">123</span>;</span><br><span class="line">* index idx1(event_id)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">세마포어 락</span><br><span class="line">몰리면 메모리 병합 일어남 선착순 은 무조건 장애가 남</span><br></pre></td></tr></table></figure>
+<p>15</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">select ticket_no, </span><br><span class="line">       reserve_no, </span><br><span class="line">       reserve_detail_no, </span><br><span class="line">       issue_state_code, </span><br><span class="line">       issue_datetime,</span><br><span class="line">       register_datetime</span><br><span class="line">from ticket</span><br><span class="line"><span class="keyword">where</span> issue_state_code =  ‘USE’</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> register_datetime desc;</span><br><span class="line"></span><br><span class="line">index issue_state_code, register_datetime index 걸어</span><br><span class="line"></span><br><span class="line">그리고 디폴트 값을 줘야됨. 전체를 조회하게 하면 안됨</span><br></pre></td></tr></table></figure>
+<h2 id="MySQL-특성"><a href="#MySQL-특성" class="headerlink" title="MySQL 특성"></a>MySQL 특성</h2><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span>(<span class="keyword">delete</span>) table <span class="number">10</span>만건테이블 set a = <span class="number">10</span> <span class="keyword">where</span> b = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">b에 인덱스가 없으면</span><br><span class="line"><span class="number">10</span>만건의 락이 걸림</span><br><span class="line"></span><br><span class="line">db엔진과 스토리지 엔진이 분리되어있어서..</span><br><span class="line">b 인덱스 없어서 full table scan 플랜이 나옴</span><br><span class="line"><span class="keyword">update</span>니까 <span class="number">10</span>만건을 다 락 해버림, 나는 <span class="number">5</span>번만 업데이트하고싶은데.. </span><br><span class="line"></span><br><span class="line">여튼 그래서 <span class="keyword">update</span>나 <span class="keyword">delete</span>는 무조건 인덱스 있는 조건으로.</span><br><span class="line"></span><br><span class="line">만약 복잡한 조건으로 <span class="keyword">update</span> <span class="keyword">delete</span>를 해야하는 경우 Select를 통해서 가져온 다음에 그거의 pk를 가져와서 <span class="keyword">update</span>를 해주는게 좋다.</span><br></pre></td></tr></table></figure>
+</div><div class="article__tags"><a class="article__tags__item" href="/tags/MySQL/">MySQL</a><a class="article__tags__item" href="/tags/JOIN/">JOIN</a><a class="article__tags__item" href="/tags/DB-INDEX/">DB INDEX</a></div><div class="article__author" itemscope itemprop="author" itemtype="https://schema.org/Person"><img class="article__author__image" src="/images/profile.png" alt="KyuNam"><a class="article__author__link" title="About KyuNam" rel="author">KyuNam</a><p class="article__author__desc">dev log</p><div class="article__author__socials"><a class="article__author__socials__item" href="https://github.com/tramyu" title="github" target="_blank"><i class="fa fa-github"></i></a><a class="article__author__socials__item" href="https://www.facebook.com/xmfpes" title="facebook" target="_blank"><i class="fa fa-facebook"></i></a><a class="article__author__socials__item" href="https://www.linkedin.com/feed/" title="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a><a class="article__author__socials__item" href="https://www.instagram.com/" title="instagram" target="_blank"><i class="fa fa-instagram"></i></a><a class="article__author__socials__item" href="/atom.xml" title="rss" target="_blank"><i class="fa fa-rss"></i></a></div><meta itemprop="name" content="KyuNam"></div><div class="sharer" id="sharer"><div class="sharer-inner"><div class="sharer__right"><button class="sharer__item" id="sharer-facebook"><i class="fa fa-facebook-official"></i></button><button class="sharer__item" id="sharer-twitter"><i class="fa fa-twitter"></i></button><button class="sharer__item" id="sharer-pinterest"><i class="fa fa-pinterest"></i></button><button class="sharer__item" id="sharer-pocket"><i class="fa fa-get-pocket"></i></button></div></div></div><!-- Disqus Code--><div id="disqus_thread"></div><script>(function() {
+  var d = document, s = d.createElement('script');
+  s.src = '//kyunam-disqus-com.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-04-24T08:59:50.208Z"><meta itemprop="articleBody" content="DB 사전 지식릴레이션
+1 : N
+하나의 주문은 여러개의 상품을 가진다.
+하나의 주문상품은 반드시 하나의 주문을 가진다.
+주문에는 주문상품이 없을수도 있다.
+MySql Doc
+조인
+Inner Join
+
+1: n
+target table parent, child면 두개 합친
+target table parent를 하면 child의 결과값이 중복해서..."><meta itemprop="url" content="http://yoursite.com/db/db-index/"><meta itemprop="mainEntityOfPage" content="http://yoursite.com/db/db-index/"><div itemscope itemtype="https://schema.org/Organization" itemprop="publisher"><meta itemprop="name" content="Devlog"><div itemscope itemprop="logo" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="http://yoursite.com/images/internet.png"></div></div><div itemscope itemtype="https://schema.org/ImageObject" itemprop="image"><meta itemprop="contentUrl" content="http://yoursite.com/images/java/java.png"><meta itemprop="url" content="http://yoursite.com/images/java/java.png"><meta itemprop="width" content="1280"><meta itemprop="height" content="720"></div></article></div></div></div><footer id="footer"><div class="widgets"><div class="widgets-inner"><!-- Jade doesn't support dynamic inclusion with `each`.--><!-- So, I just hard coded the file names that will be included.--><div class="widgets__item"><h3 class="widgets__item__heading">Recent posts</h3><ul class="recent-posts"><li class="recent-posts__item"><a href="/algorithm/algorithm-15/">백준 온라인 저지 - 연결 요소의 개수</a></li><li class="recent-posts__item"><a href="/algorithm/algorithm-14/">백준 온라인 저지 - DFS와 BFS</a></li><li class="recent-posts__item"><a href="/algorithm/algorithm-13/">Codility 4-4 MaxCounters</a></li><li class="recent-posts__item"><a href="/java/design-pattern/design-pattern-01/">Java 디자인 패턴 01 - Abstract Factory Pattern</a></li><li class="recent-posts__item"><a href="/java/design-pattern/design-pattern-02/">Java 디자인 패턴 02 - Factory Method Pattern</a></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Categories</h3><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/">Backend</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/">Java</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/DesignPattern/">DesignPattern</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/Hexo/">Hexo</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">16</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Algorithm/">Algorithm</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Datastructure/">Datastructure</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/MySQL/">MySQL</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Javascript/">Javascript</a><span class="category-list-count">2</span></li></ul></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Tag cloud</h3><div class="tag-cloud"><a href="/tags/AbstractFactory/" style="font-size: 1rem;">AbstractFactory</a> <a href="/tags/Algorithm/" style="font-size: 1.5rem;">Algorithm</a> <a href="/tags/DB-INDEX/" style="font-size: 0.75rem;">DB INDEX</a> <a href="/tags/Graph/" style="font-size: 0.75rem;">Graph</a> <a href="/tags/Hexo/" style="font-size: 0.75rem;">Hexo</a> <a href="/tags/JOIN/" style="font-size: 0.75rem;">JOIN</a> <a href="/tags/Java/" style="font-size: 1.25rem;">Java</a> <a href="/tags/Javascript/" style="font-size: 1rem;">Javascript</a> <a href="/tags/MySQL/" style="font-size: 0.75rem;">MySQL</a></div></div></div></div><p class="copyright"><small>© 2018 KyuNam<br>Powered by <a href="https://hexo.io" rel="external" target="_blank">Hexo</a>, Theme by <a href="https://github.com/hyunseob" rel="external" target="_blank">HyunSeob</a></small></p></footer><script src="/js/sharer.min.js"></script></body></html>
