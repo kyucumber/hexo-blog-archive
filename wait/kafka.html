@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="kr"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Devlog</title><link rel="stylesheet" href="/libs/spoqa-han-sans-kr/css/SpoqaHanSans-kr.css"><link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="/css/highlights/dracula.css"><link rel="canonical" href="http://yoursite.com/wait/kafka.html"/>
+<meta name="description" content="Apache KAFKA메세지 브로커? 메세징 큐 사용 용도는 담당 서비스 A -&amp;gt; 담당 서비스 B로 데이터 전달 시 사용? 분산 시스템 ZooKeeper 를 이용해 노드 관리  실시간 로그 통합 무중단(장비 장애 등 상관없이) 다른 기종과의…">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Devlog">
+<meta property="og:url" content="http://yoursite.com/wait/kafka.html">
+<meta property="og:site_name" content="Devlog">
+<meta property="og:description" content="Apache KAFKA메세지 브로커? 메세징 큐 사용 용도는 담당 서비스 A -&amp;gt; 담당 서비스 B로 데이터 전달 시 사용? 분산 시스템 ZooKeeper 를 이용해 노드 관리  실시간 로그 통합 무중단(장비 장애 등 상관없이) 다른 기종과의…">
+<meta property="og:locale" content="kr">
+<meta property="og:image" content="http://yoursite.com/images/algorithm.png">
+<meta property="og:updated_time" content="2018-05-16T03:00:18.638Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Devlog">
+<meta name="twitter:description" content="Apache KAFKA메세지 브로커? 메세징 큐 사용 용도는 담당 서비스 A -&amp;gt; 담당 서비스 B로 데이터 전달 시 사용? 분산 시스템 ZooKeeper 를 이용해 노드 관리  실시간 로그 통합 무중단(장비 장애 등 상관없이) 다른 기종과의…">
+<meta name="twitter:image" content="http://yoursite.com/images/algorithm.png"><link rel="icon" href="/images/internet.png"><link rel="alternate" href="/atom.xml" type="application/atom+xml" title="Devlog"></head><body itemscope itemtype="https://schema.org/WebPage"><nav class="menu" id="menu"><div class="menu-inner"><div class="menu__left-area"><div class="menu__item"><a class="menu__item__link menu__item__link--brand" href="/" title="Home" rel="home"><img class="menu__item__link--brand__image" src="/images/internet.png" alt="Devlog"><span class="menu__item__link--brand__label">Devlog</span></a></div></div><div class="menu__right-area"><div class="menu__item"><a class="menu__item__link" href="/">Home</a></div><div class="menu__item"><a class="menu__item__link" href="/about">About</a></div><div class="menu__item"><a class="menu__item__link" href="/archives">Archives</a></div></div></div></nav><div class="page-background"></div><div class="content-container"><div class="content-outer"><div class="content-inner" itemscope itemtype="https://schema.org/Blog"><article class="article" id="article" itemscope itemtype="https://schema.org/BlogPosting"><h1 class="article__title" itemprop="headline">Untitled</h1><div class="article__meta"><time class="article__meta__time" datetime="2018-05-16T03:00:18.648Z" itemprop="datePublished">2018-05-16 12:00:18</time></div><hr><div class="article__contents"><h2 id="Apache-KAFKA"><a href="#Apache-KAFKA" class="headerlink" title="Apache KAFKA"></a>Apache KAFKA</h2><p>메세지 브로커?</p>
+<p>메세징 큐</p>
+<p>사용 용도는 담당 서비스 A -&gt; 담당 서비스 B로 데이터 전달 시 사용?</p>
+<p>분산 시스템 ZooKeeper 를 이용해 노드 관리</p>
+<ul>
+<li>실시간 로그 통합</li>
+<li>무중단(장비 장애 등 상관없이)</li>
+<li>다른 기종과의 호환성</li>
+<li>간단한 scale out</li>
+<li>프로듀서, 컨슈머 역할분리</li>
+</ul>
+<p>RabbitMQ vs KAFAKA</p>
+<p>RabiitMQ는 Zookeeper가 아닌 자기 자신이 헬스 체크 등 클러스터 관리.</p>
+<p>KAFKA</p>
+<p>Message 크기 작을수록, broker가 많을수록, replica가 작을수록, partition을 클수록 성능 좋음</p>
+<p>파티션 수를 한번 늘리면 줄일 수 없음. 파티션 수를 적게 잡고 시작했다가 문제 시 조금씩 늘리는게 좋음</p>
+<p>Kakao 전사 카프카 - 하루 1800억개 처리, 최대 초당 80만개 메세지 처리(파티션 30개 기준)</p>
+<p>하드웨어 스펙 12코어 + 메모리32GB JMX 힙 사이즈 설정, 6GB 많을 필욘 없음. 남은 메모리는 페이지 캐시로</p>
+<p>32GB 6GB 힙, 나머지 페이지 캐시 영역 sata 디스크 사용 ssd 안씀</p>
+<p>장애</p>
+<ul>
+<li>Shrinking ISR</li>
+</ul>
+<p>ISR - In-Sync Replicas</p>
+<p>복제되고 있는 구성원 그룹 리더, 팔로워로 구분 리더는 read/write 팔로워는 주기적으로 리더와 동기화만 함</p>
+<p>ISR의 구성원만이 리더의 자격을 갖는다..</p>
+<p>KAFAKA Cluster</p>
+<p>leader, follower, follower</p>
+<p>leader만 프로듀서의 메세지를 받음</p>
+<p>리더가 죽었을 때 메세지를 보낼수도 읽을수도 없게 됨 - 그래서 follower가 리더로 상승해야 됨 여튼 리더로 상승되고 나서</p>
+<p>ISR에는 죽은 리더는 들어가있지 않음</p>
+<p>ISR 축소 자체는 브로커 점검이나 일시적인 사유로 흔하게 일어나므로 로그 레벨도 INFO</p>
+<p>Shrinking ISR 로그는 점검..</p>
+<ul>
+<li>RACK POWER</li>
+</ul>
+<p>IDC 랙 별로 브로커를 분산시켜서 배치해야함</p>
+<p>Option 3개가 있으면 한개 브로커가 리더 역할. 3번 랙(3번 브로커가) 리더일 때 장애가 나면</p>
+<p>나머지 1, 2번 랙 브로커중에 하나가 리더가 됨</p>
+<p>2번이 리더 메세지 B를 받았을 때 1번이 그 B를 복제.</p>
+<p>그 이후 2번이 장애 나면 1번으로 리더가 넘어가고 C 메세지를 받음</p>
+<p>랙 1번, 브로커 1번도 장애 </p>
+<p>1번 ABC, 2번 AB, 3번 A를 가지고 있는데 다 죽은 상태</p>
+<p>1번이 먼저 살아나면 다른 2, 3번이 살아나면서 리더의 메세지를 복제해오기 때문에 문제가 없는데</p>
+<p>3번이 먼저 살아나서 강제로 리더가 된다면? 다음 메세지인 D가 들어오게 됨.</p>
+<p>그 이후 1, 2번이 살아나고 3번이 리더라 3번과 메세지 동기화를 하면 3번은 AD만 가지고 있어서 1,2번에서 B, C 메세지가 손실되게 됨..</p>
+<p>먼저 올라오는걸 리더로 선택할건지, 마지막 리더가 살아날때까지 기다릴건지를 선택해야 함.</p>
+<p>서비스 영속성, 데이터 정합성을 선택해야 함.</p>
+<h2 id="USE-Case"><a href="#USE-Case" class="headerlink" title="USE Case"></a>USE Case</h2><p>MSA, RabbitMQ Log System</p>
+<p>장점 Real Time, Flexible, 확장성</p>
+<p>로그를 통합하고 싶다. CS 요청 때문에 각 서버에 다 들어가서 grep으로 로그를 뒤진다.</p>
+<p>사실 elasticsearch kibana로 ..</p>
+<p>MSA 기반에서 KAFKA 도입, </p>
+<p>RabbitMQ Log System</p>
+<p>RabbitMQ -&gt; kafka(log worker, kafka producer) -&gt; nifi -&gt; elastic -&gt; kinana</p>
+<p>RabbitMQ에서 바로 elastic search로 보낼 수 있는데 장애가 자주 발생했었음.</p>
+<p>elastic search 저장용도로 kafka를 사용하는 경우 있음</p>
+<p>카프카 토픽 별로 데이터를 쌓고 topic -&gt; logstash -&gt; elasticsearch -&gt; kibana</p>
+<p>topic -&gt; nifi -&gt; hadoop -&gt; spark -&gt; …</p>
+<h2 id="Producer"><a href="#Producer" class="headerlink" title="Producer"></a>Producer</h2><p>메세지를 카프카로 보내는 역할</p>
+<p>옵션중 ACKS가 있다.</p>
+<p>ACKS = 0; 매우 빠르게 전송, 파티션의 리더가 받았는지 확인할 수 없음</p>
+<p>ACKS = 1 메세지 전송이 빠르고, 리더가 받았는지 확인 기본값으로 보통 사용한다. 손실 가능성 있음.</p>
+<p>보내자마자 리더가 다운되는 경우 발생. 저장하고 나서 ACK는 보내는데 바로 다운된 경우 발생..</p>
+<p>프로듀서는 ACK를 받아서 손실됐는지 모르고 넘어감.</p>
+<p>프로듀서는 다음 메세지를 보낼텐데 리더가 죽은 상태기 때문에 다른 팔로워가 리더로 동작하면서 그 사이에 유실될 수 있음</p>
+<p>이런 일이 빈번하진 않음.</p>
+<p>ACKS = ALL 메세지 전송은 느리지만 손실 없는 메세지 전송</p>
+<p>프로듀서에서 한가지 옵션을 더 체크할 게 있는데</p>
+<p>특정 파티션만 메세지를 못 가져오고 있다, 특정 파티션의 사이즈가 이상하다. 하는 경우가 있을 수 있음</p>
+<p>프로듀서가 카프카로 메세지를 보낼때는 키 밸류 형태로 보낸다. 키값을 안줄수도 있다. 키값이 없으면 랜덤하게 들어감.</p>
+<p>키값이 유니크하지 않으면 파티션 사이즈가 균형이 안맞을수도 있다. 키값을 유니크하게 주자.</p>
+<p>컨슈머가 자꾸 죽는 경우?</p>
+<p>producer with ack=0;</p>
+<p>topic and partition to exceptions: sampletopic-3 예외 발생, 근데 로그레벨 info producer 설정이 ack=0이라서</p>
+<h2 id="Consumer"><a href="#Consumer" class="headerlink" title="Consumer"></a>Consumer</h2><p>컨슈머는 브로커 리더 파티션으로부터 메세지를 가져오는게 주 목적.</p>
+<p>오프셋 위치를 가지고 그 위치부터 메세지를 계속 가져오는 역할을 한다.</p>
+<p>컨슈머가 자기의 리소스를 최대한 활용해서 가져갈 수 있도록 설계하는게 목적. 푸시 방식이 아니라(브로커가 컨슈머에게 보내주는게 아니라) 풀 방식으로 설계되어있음.</p>
+<p>프로듀서는 푸시, 컨슈머는 풀 방식으로 동작한다.</p>
+<p>파티션에 a(오프셋 0),b,c,d,e가 있으면 컨슈머는 그걸 몰라도 오프셋 0부터 그냥 a, b, c, d, e 대로 들고옴</p>
+<p>파티션이 한개면 오프셋 순서대로 그냥 들고온다.</p>
+<p>파티션이 2개 이상인 경우 컨슈머가 가져올때는?</p>
+<p>파티션 0 a d h i j</p>
+<p>파티션 1 b c e f g</p>
+<p>오프셋 순서대로 가져오는데 파티션 순서는 보장되지 않음.</p>
+<p>b, c, a , d</p>
+<p>순서 보장하고싶으면 타임스탬프를 찍고 정렬을 하거나 파티션을 하나만 써야 함</p>
+<p>컨슈머 그룹</p>
+<p>하나의 파티션에는 하나의 컨슈머만 가능하다.</p>
+<p>파티션이 3개 컨슈머 3 각각 하나씩</p>
+<p>파티션 3개 컨슈머 1개 3개 파티션이 1개 컨슈머에 붙음</p>
+<p>파티션 3개 컨슈머 그룹에 컨슈머 4개면 컨슈머 하나는 놀게 된다. 이런 경우엔 파티션을 하나 늘려줘야 함</p>
+<p>컨슈머 장애 시 (컨슈머 4번 죽음) 다른 컨슈머가 그 역할을 이어받아서 메세지를 이어받게 된다.</p>
+<p>카프카는 메세지를 받아서 자기 로컬 디스크에 저장하며 기본 디폴트 값으로 7일동안 데이터를 저장한다.</p>
+<p>컨슈머에서 메세지를 가져가더라도 카프카에는 메세지가 남아있게 됨.(RabbitMQ에서는 큐에서 메세지를 가져가면 메세지를 삭제한다.)</p>
+<p>카프카에서 메세지를 가지고 있기 때문에 그룹을 이용해 멀티 컨슈머 가능</p>
+<p>Peter-01 이라는 파티션 - consumer-hadoop 그룹, consumer-es 그룹 두개 사용가능 hadoop 그룹은 하둡에만, consumer-es는 es에만 ..</p>
+<p>하나의 토픽에 멀티 컨슈머 그룹 가능</p>
+<ul>
+<li>Commit</li>
+</ul>
+<p>컨슈머는 파티션의 몇번째 offset까지 메세지를 가져왔는지를 표시한다. 이러한 행동을 commit한다고 함.</p>
+<p>rebalncing이나 컨슈머 재시작 시 마지막 커밋된 위치부터 시작하게 된다.</p>
+<p>auto commit <code>enable.auto.commit = true</code> 기본값. </p>
+<p>오토 커밋은 약간의 문제? 가 있다.</p>
+<p>인터벌 단위로 커밋을 하게 되는데 주기가 5초.</p>
+<p>컨슈머는 가져오기만 하고 오토 커밋으로 5초 인터벌로 계속 커밋이 되게 된다. 문제가 되는 상황은</p>
+<p>1, 2, 3, 4까지 가져오고 나서 오토 커밋으로 4번까지 됐는데 5,6번 메세지를 가져오고 나서 (5번 2.5초 소요)  5번 메세지를 가져오고 나서 바로 죽는 경우 rebalancing을 하게 됨. </p>
+<p>그럼 커밋 4번부터 메세지를 가져오는데 그럼 또다시 5번을 가져오게 됨 메세징이 중복되는 현상 발생</p>
+<p>producer ack = 0일때의 해결 방법</p>
+<p>오프셋 위치가 443, 443 메세지를 가져올때마다 다운이 된다.</p>
+<p>최근 버전은 시간 단위, 구버전은 오프셋 단위로 변경 가능 문제가 되는 오프셋 단위를 건너뛸 수 있다.</p>
+<p><code>—offset ~~</code></p>
+<ul>
+<li>LAG</li>
+</ul>
+<p>END Offset - curret offset = LAG</p>
+<p>버로우라는 툴을 이용해 LAG 체킹 가능</p>
+<ul>
+<li>운영과 관련된 팁..??</li>
+</ul>
+<p>파티션 수를 늘리는 경우..한번 늘리면 줄일 수 없기 때문에</p>
+<p>파티션 초당 10 처리 가능 , 컨슈머 초당 100처리 가능한 경우.. 파티션을 늘릴 필요가 없다.</p>
+<p>파티션 3개 초당 400개 처리, 컨슈머 초당 300개 처리 이런 경우 lag이 초당 100개씩 증가하기 때문에 이런 경우 파티션을 추가해야 함. 당연히 컨슈머도 추가. </p>
+<p>랙이 발생하는지 보고 랙 발생에 따라 적절히 파티션 수를 늘리면 된다.</p>
+<p>디스크 공간 추가?</p>
+<p>retention.hours 168(7일) 초당 80만개씩 들어오는데 7일 보관하면 감당이 안됨..(이건 카프카 글로벌 config)</p>
+<p>retention.ms=86400000(1일)(토픽 개별 config)</p>
+<p>일단 global config를 7일에서 줄이는게 좋고, 오랫동안 보관 안해도 되는 토픽은 config 줄이자.</p>
+<p>스케일 아웃</p>
+<p>처음 브로커 5개 -&gt; 부하가 크면 늘려야 하는데 그때의 scale out</p>
+<p>그냥 브로커 하나 만든다음에 아이디를 unique하게 만들면 됨</p>
+<p>카프카 클러스터 브로커 1, 2, 3이 있다. 1에는 리더 2, 2번은 리더 1, 3번 리더 1</p>
+<p>1에 있는 리더 0, 3 파티션 중에 있는 리더를 새로 생긴 브로커로 이동시켜야 함.</p>
+<p>브로커 4번 추가 후 1에 있는 3번 파티션을 이동하면 골고루 분산되게 된다.</p>
+<p>kafka</p>
+<p>All</p>
+<p>zookeeper</p>
+<p>Kerberos</p>
+<p>보안 클러스터</p>
+<p>딜레이 큐 기능은 카프카에 없어서 그런 경우 RabbitMQ</p>
+<p>구매내역 결제 정보 Kafka로 쏘면 손실될 수 있기 때문에 그런 경우 RabbitMQ가 낫다.</p>
+</div><div class="article__author" itemscope itemprop="author" itemtype="https://schema.org/Person"><img class="article__author__image" src="/images/profile.png" alt="KyuNam"><a class="article__author__link" title="About KyuNam" rel="author">KyuNam</a><p class="article__author__desc">dev log</p><div class="article__author__socials"><a class="article__author__socials__item" href="https://github.com/tramyu" title="github" target="_blank"><i class="fa fa-github"></i></a><a class="article__author__socials__item" href="https://www.facebook.com/xmfpes" title="facebook" target="_blank"><i class="fa fa-facebook"></i></a><a class="article__author__socials__item" href="https://www.linkedin.com/feed/" title="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a><a class="article__author__socials__item" href="https://www.instagram.com/" title="instagram" target="_blank"><i class="fa fa-instagram"></i></a><a class="article__author__socials__item" href="/atom.xml" title="rss" target="_blank"><i class="fa fa-rss"></i></a></div><meta itemprop="name" content="KyuNam"></div><div class="sharer" id="sharer"><div class="sharer-inner"><div class="sharer__right"><button class="sharer__item" id="sharer-facebook"><i class="fa fa-facebook-official"></i></button><button class="sharer__item" id="sharer-twitter"><i class="fa fa-twitter"></i></button><button class="sharer__item" id="sharer-pinterest"><i class="fa fa-pinterest"></i></button><button class="sharer__item" id="sharer-pocket"><i class="fa fa-get-pocket"></i></button></div></div></div><!-- Disqus Code--><div id="disqus_thread"></div><script>(function() {
+  var d = document, s = d.createElement('script');
+  s.src = '//kyunam-disqus-com.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-05-16T03:00:18.638Z"><meta itemprop="articleBody" content="Apache KAFKA메세지 브로커?
+메세징 큐
+사용 용도는 담당 서비스 A -&amp;gt; 담당 서비스 B로 데이터 전달 시 사용?
+분산 시스템 ZooKeeper 를 이용해 노드 관리
+
+실시간 로그 통합
+무중단(장비 장애 등 상관없이)
+다른 기종과의 호환성
+간단한 scale out
+프로듀서, 컨슈머 역할분리
+
+RabbitMQ vs..."><meta itemprop="url" content="http://yoursite.com/wait/kafka.html"><meta itemprop="mainEntityOfPage" content="http://yoursite.com/wait/kafka.html"><div itemscope itemtype="https://schema.org/Organization" itemprop="publisher"><meta itemprop="name" content="Devlog"><div itemscope itemprop="logo" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="http://yoursite.com/images/internet.png"></div></div><div itemscope itemtype="https://schema.org/ImageObject" itemprop="image"><meta itemprop="contentUrl" content="http://yoursite.com/images/algorithm.png"><meta itemprop="url" content="http://yoursite.com/images/algorithm.png"><meta itemprop="width" content="1280"><meta itemprop="height" content="720"></div></article></div></div></div><footer id="footer"><div class="widgets"><div class="widgets-inner"><!-- Jade doesn't support dynamic inclusion with `each`.--><!-- So, I just hard coded the file names that will be included.--><div class="widgets__item"><h3 class="widgets__item__heading">Recent posts</h3><ul class="recent-posts"><li class="recent-posts__item"><a href="/algorithm/algorithm-20/">Codility 5-2 PassingCars</a></li><li class="recent-posts__item"><a href="/java/spring/spring-boot-angular-03/">스프링 부트와 Angular로 게시판 만들기 - 3. 로그인</a></li><li class="recent-posts__item"><a href="/java/spring/spring-jwt-01/">Spring Security - Jwt 기반 인증 처리 구현</a></li><li class="recent-posts__item"><a href="/java/spring/spring-boot-angular-02/">스프링 부트와 Angular로 게시판 만들기 - 2. Angular 프로젝트 초기 설정하기</a></li><li class="recent-posts__item"><a href="/java/spring/spring-boot-angular-01/">스프링 부트와 Angular로 게시판 만들기 - 1. 프로젝트 생성하기</a></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Categories</h3><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/">Backend</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/">Java</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/DesignPattern/">DesignPattern</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/Spring/">Spring</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/Hexo/">Hexo</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Algorithm/">Algorithm</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Datastructure/">Datastructure</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Javascript/">Javascript</a><span class="category-list-count">2</span></li></ul></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Tag cloud</h3><div class="tag-cloud"><a href="/tags/AbstractFactory/" style="font-size: 0.94rem;">AbstractFactory</a> <a href="/tags/Algorithm/" style="font-size: 1.5rem;">Algorithm</a> <a href="/tags/Graph/" style="font-size: 0.75rem;">Graph</a> <a href="/tags/Hexo/" style="font-size: 0.75rem;">Hexo</a> <a href="/tags/Java/" style="font-size: 1.31rem;">Java</a> <a href="/tags/Javascript/" style="font-size: 0.94rem;">Javascript</a> <a href="/tags/Spring/" style="font-size: 1.13rem;">Spring</a></div></div></div></div><p class="copyright"><small>© 2018 KyuNam<br>Powered by <a href="https://hexo.io" rel="external" target="_blank">Hexo</a>, Theme by <a href="https://github.com/hyunseob" rel="external" target="_blank">HyunSeob</a></small></p></footer><script src="/js/sharer.min.js"></script></body></html>
