@@ -8,7 +8,7 @@
 <meta property="og:description" content="String, StringBuilder, StringBuffer 차이 String  String 클래스는 Immutable 객체이기 때문에 + 등 concat 연산 시 원본을 변경하지 않고 새로운 String 인스턴스를 생성해야 하는 단점이…">
 <meta property="og:locale" content="kr">
 <meta property="og:image" content="http://yoursite.com/images/data/graph.png">
-<meta property="og:updated_time" content="2018-06-03T11:48:32.593Z">
+<meta property="og:updated_time" content="2018-06-03T11:52:17.692Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="자바 기반 면접 질문 정리">
 <meta name="twitter:description" content="String, StringBuilder, StringBuffer 차이 String  String 클래스는 Immutable 객체이기 때문에 + 등 concat 연산 시 원본을 변경하지 않고 새로운 String 인스턴스를 생성해야 하는 단점이…">
@@ -104,7 +104,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Example o)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.age - o.age;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Comparator compareTo 메소드 구현</span></span><br></pre></td></tr></table></figure>
 <h2 id="LinkedList와-ArrayList의-차이"><a href="#LinkedList와-ArrayList의-차이" class="headerlink" title="LinkedList와 ArrayList의 차이"></a>LinkedList와 ArrayList의 차이</h2><p>ArrayList는 검색에 유리한 구조, 삽입 삭제가 자주 일어나면 LinkedList를 사용하는것이 낫다.</p>
 <p>ArrayList는 내부적으로 데이터를 배열에서 관리하며 데이터의 추가, 삭제를 위해 아래와 같이 임시 배열을 생성해 데이터를 복사 하는 방법을 사용 하고 있기 때문에 삽입 삭제시 많은 복사가 일어나기 때문.</p>
-<p><img src="./ArrayList.jpg" alt="arraylist-internal"></p>
+<p><img src="/images/assets/ArrayList.jpg" alt="arraylist-internal"></p>
 <p>참고 </p>
 <p><a href="http://www.codenuclear.com/how-arraylist-works-internally-java/" target="_blank" rel="noopener">How ArrayList Works Internally in Java</a></p>
 <h2 id="Abstract-Class-Interface-차이점"><a href="#Abstract-Class-Interface-차이점" class="headerlink" title="Abstract Class, Interface 차이점"></a>Abstract Class, Interface 차이점</h2><p>추상 클래스는 상속을 통해 부모 클래스의 기능을 이용, 확장하기 위해 제공되며 다중 상속이 불가능하다.</p>
@@ -136,7 +136,7 @@
 </ul>
 <p>이러한 가설을 ‘weak generational hypothesis’라 한다. 이 가설의 장점을 최대한 살리기 위해서 HotSpot VM에서는 크게 2개로 물리적 공간을 나누었다. 둘로 나눈 공간이 <strong>Young 영역과 Old 영역</strong>이다.</p>
 <p>영역별 데이터 흐름은 아래와 같다.</p>
-<p><img src="./image-20180602160808763.png" alt="image-20180602160808763"></p>
+<p><img src="/images/assets/image-20180602160808763.png" alt="image-20180602160808763"></p>
 <p>위의 Permanenet Generation 영역은 Method 영역에 포함된 부분이고.. Java 8부터 MetaSpace 영역으로 바뀌었다고 한다. 위 그림과 동일하게 적용되는지는 모르겠다. (PermGen 영역에서 일어나는 GC도 Major GC에 포함된다.)</p>
 <blockquote>
 <p>Young 영역</p>
@@ -178,7 +178,7 @@
 <p>해시함수를 통해 얻은 해시코드 값이 두 개 이상 같은 경우 해시의 충돌이 발생한다.</p>
 <p>충돌은 아무리 해시 함수를 잘 구현하더라도 필연적으로 발생할 수 밖에 없다.</p>
 <p>이렇듯 발생하는 충돌에 대해서 해시 충돌이 발생하더라도 키-값 쌍 데이터를 잘 저장하고 조회할 수 있게 하는 방식에는 대표적으로 두가지가 존재하는데 하나는 <strong>Open Addressing</strong>이고, 다른 하나는 <strong>Separate Chaining</strong>이다.</p>
-<p><img src="./image-20180603152806610.png" alt="image-20180603152806610"></p>
+<p><img src="/images/assets/image-20180603152806610.png" alt="image-20180603152806610"></p>
 <p>Open Addressing은 데이터를 삽입하려는 해시 버킷이 이미 사용 중인 경우 다른 해시 버킷에 해당 데이터를 삽입하는 방식이다. 데이터를 저장/조회할 해시 버킷을 찾을 때에는 Linear Probing, Quadratic Probing 등의 방법을 사용한다.</p>
 <p>Separate Chaining에서 각 배열의 인자는 인덱스가 같은 해시 버킷을 연결한 링크드 리스트의 첫 부분(head)이다.</p>
 <p><em>Java HashMap에서 사용하는 방식은 Separate Channing이다. Open Addressing은 데이터를 삭제할 때 처리가 효율적이기 어려운데, HashMap에서 remove() 메서드는 매우 빈번하게 호출될 수 있기 때문이다. 둘 모두 Worst Case O(M) 이며 자세한 설명한 생략한다.</em></p>
@@ -198,7 +198,7 @@
 <p>Primary/Unique Key 모두 선언되지 않은 테이블의 경우에는 6 byte의 Hidden Key를 생성 (rowid) Non-Clustered Key는 데이터의 물리적인 위치 대신 PK 값을 참조함</p>
 <p>일단 index를 타지 않아 테이블 full scan하는 경우에 대해서 쿼리 튜닝이 필요하다. 쿼리 작성 시 explain으로 쿼리 실행 계획을 확인해서 index를 잘 타는지 full scan을 하지 않는지 체크하고 튜닝을 하자.</p>
 <h2 id="OSI-7계층-TCP-IP-4계층"><a href="#OSI-7계층-TCP-IP-4계층" class="headerlink" title="OSI 7계층, TCP/IP 4계층"></a>OSI 7계층, TCP/IP 4계층</h2><p>OSI 7계층, 아래와 같다.</p>
-<p><img src="./osi.gif" alt="osi 7 layer"></p>
+<p><img src="/images/assets/osi.gif" alt="osi 7 layer"></p>
 <p>여기서 <code>어플리케이션 계층, 표현 계층, 세션 층</code>을 통합해 하나의 어플리케이션 레이어로 구분하고 <code>데이터 링크 계층과 물리 계층</code>을 통합하여 네트워크 인터페이스 계층으로 통합한 것이 TCP/IP 계층 모델이다.</p>
 <p><a href="http://www.naver.com" target="_blank" rel="noopener">www.naver.com</a> 을 호출했을 때의 네트워크의 흐름 TCP/IP 계층 모델에 맞춰서 설명해보자.</p>
 <blockquote>
@@ -242,7 +242,7 @@
 <blockquote>
 <p>HTTP Request</p>
 </blockquote>
-<p><img src="./image-20180603203000371.png" alt="image-20180603203000371"></p>
+<p><img src="/images/assets/image-20180603203000371.png" alt="image-20180603203000371"></p>
 <p><strong>Request Message Header</strong></p>
 <ul>
 <li><strong>Request Line</strong></li>
@@ -259,7 +259,7 @@
 <blockquote>
 <p>HTTP Response</p>
 </blockquote>
-<p><img src="./image-20180603203355021.png" alt="image-20180603203355021"></p>
+<p><img src="/images/assets/image-20180603203355021.png" alt="image-20180603203355021"></p>
 <p><strong>Response Message Header</strong></p>
 <ul>
 <li><strong>Status Line</strong></li>
@@ -358,7 +358,7 @@
   s.src = '//kyunam-disqus-com.disqus.com/embed.js';
   s.setAttribute('data-timestamp', +new Date());
   (d.head || d.body).appendChild(s);
-})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-06-03T11:48:32.593Z"><meta itemprop="articleBody" content="String, StringBuilder, StringBuffer 차이
+})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-06-03T11:52:17.692Z"><meta itemprop="articleBody" content="String, StringBuilder, StringBuffer 차이
 String
 
 String 클래스는 Immutable 객체이기 때문에 + 등 concat 연산 시 원본을 변경하지 않고 새로운 String 인스턴스를 생성해야 하는 단점이 존재한다. 하지만 JDK 1.5 이후부터는 컴파일 타임에 StringBuilder로 변경한다고..."><meta itemprop="url" content="http://yoursite.com/etc/interview/"><meta itemprop="mainEntityOfPage" content="http://yoursite.com/etc/interview/"><div itemscope itemtype="https://schema.org/Organization" itemprop="publisher"><meta itemprop="name" content="Devlog"><div itemscope itemprop="logo" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="http://yoursite.com/images/internet.png"></div></div><div itemscope itemtype="https://schema.org/ImageObject" itemprop="image"><meta itemprop="contentUrl" content="http://yoursite.com/images/data/graph.png"><meta itemprop="url" content="http://yoursite.com/images/data/graph.png"><meta itemprop="width" content="1280"><meta itemprop="height" content="720"></div></article></div></div></div><footer id="footer"><div class="widgets"><div class="widgets-inner"><!-- Jade doesn't support dynamic inclusion with `each`.--><!-- So, I just hard coded the file names that will be included.--><div class="widgets__item"><h3 class="widgets__item__heading">Recent posts</h3><ul class="recent-posts"><li class="recent-posts__item"><a href="/etc/interview/">자바 기반 면접 질문 정리</a></li><li class="recent-posts__item"><a href="/java/spring/spring-boot-ref-doc-03/">Spring Boot</a></li><li class="recent-posts__item"><a href="/java/spring/spring-security/">Spring Security의 간략한 구조</a></li><li class="recent-posts__item"><a href="/algorithm/algorithm-20/">Codility 5-2 PassingCars</a></li><li class="recent-posts__item"><a href="/java/spring/spring-boot-angular-03/">스프링 부트와 Angular로 게시판 만들기 - 3. 로그인</a></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Categories</h3><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/">Backend</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/">Java</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/DesignPattern/">DesignPattern</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/Spring/">Spring</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/Hexo/">Hexo</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Algorithm/">Algorithm</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Datastructure/">Datastructure</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Javascript/">Javascript</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">1</span></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Tag cloud</h3><div class="tag-cloud"><a href="/tags/AbstractFactory/" style="font-size: 0.94rem;">AbstractFactory</a> <a href="/tags/Algorithm/" style="font-size: 1.5rem;">Algorithm</a> <a href="/tags/Graph/" style="font-size: 0.75rem;">Graph</a> <a href="/tags/Hexo/" style="font-size: 0.75rem;">Hexo</a> <a href="/tags/Interview/" style="font-size: 0.75rem;">Interview</a> <a href="/tags/Java/" style="font-size: 1.31rem;">Java</a> <a href="/tags/Javascript/" style="font-size: 0.94rem;">Javascript</a> <a href="/tags/Spring/" style="font-size: 1.13rem;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 0.75rem;">SpringBoot</a></div></div></div></div><p class="copyright"><small>© 2018 KyuNam<br>Powered by <a href="https://hexo.io" rel="external" target="_blank">Hexo</a>, Theme by <a href="https://github.com/hyunseob" rel="external" target="_blank">HyunSeob</a></small></p></footer><script src="/js/sharer.min.js"></script></body></html>
