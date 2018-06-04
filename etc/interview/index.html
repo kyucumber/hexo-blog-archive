@@ -8,7 +8,7 @@
 <meta property="og:description" content="String, StringBuilder, StringBuffer 차이 String  String 클래스는 Immutable 객체이기 때문에 + 등 concat 연산 시 원본을 변경하지 않고 새로운 String 인스턴스를 생성해야 하는 단점이…">
 <meta property="og:locale" content="kr">
 <meta property="og:image" content="http://yoursite.com/images/people.png">
-<meta property="og:updated_time" content="2018-06-03T12:06:37.409Z">
+<meta property="og:updated_time" content="2018-06-04T14:39:41.444Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="서버 개발자 면접 질문 정리">
 <meta name="twitter:description" content="String, StringBuilder, StringBuffer 차이 String  String 클래스는 Immutable 객체이기 때문에 + 등 concat 연산 시 원본을 변경하지 않고 새로운 String 인스턴스를 생성해야 하는 단점이…">
@@ -52,17 +52,11 @@
 <p>그 중 JVM은 자바 어플리케이션을 클래스 로더를 통해 읽어서 바이트코드를 해석하고 자바 API와 함께 실행하는 가장 중요한 역할을 담당하고 있다.</p>
 <p>자바의 코드가 수행되는 과정은 Java Source(.java 파일)가 javac에 의해 Java Byte Code(.class 파일)로 변경되고 JVM의 클래스 로더가 컴파일된 자바 바이트코드를 런타임 데이터 영역에 로드하고 실행 엔진이 자바 바이트 코드를 수행하는 과정으로 이루어진다.</p>
 <p><img src="https://d2.naver.com/content/images/2015/06/helloworld-1230-1.png" alt="image-20180602145758293"></p>
+<h3 id="클래스-로더-Class-Loader"><a href="#클래스-로더-Class-Loader" class="headerlink" title="클래스 로더(Class Loader)"></a>클래스 로더(Class Loader)</h3><p>자바는 컴파일타임이 아니라 런타임에 클래스를 처음으로 참조할 때 해당 클래스를 로드하고 링크하는 특징이 있다. 이 동적 로드를 담당하는 부분이 JVM의 클래스 로더이다. </p>
+<h3 id="런타임-데이터-영역-Runtime-Data-Areas"><a href="#런타임-데이터-영역-Runtime-Data-Areas" class="headerlink" title="런타임 데이터 영역(Runtime Data Areas)"></a>런타임 데이터 영역(Runtime Data Areas)</h3><p>VM이라는 프로그램이 운영체제 위에서 실행되면서 할당받는 메모리 영역이다. 아래의 6가지 영역으로 나눌 수 있다.</p>
 <blockquote>
-<p> 클래스 로더(Class Loader)</p>
+<p> 스레드 별 하나씩 생성되는 영역</p>
 </blockquote>
-<p>자바는 컴파일타임이 아니라 런타임에 클래스를 처음으로 참조할 때 해당 클래스를 로드하고 링크하는 특징이 있다. 이 동적 로드를 담당하는 부분이 JVM의 클래스 로더이다. </p>
-<blockquote>
-<p> 런타임 데이터 영역(Runtime Data Areas)</p>
-</blockquote>
-<p>VM이라는 프로그램이 운영체제 위에서 실행되면서 할당받는 메모리 영역이다. 아래의 6가지 영역으로 나눌 수 있다.</p>
-<ul>
-<li><strong>스레드 별 하나씩 생성되는 영역</strong></li>
-</ul>
 <p><strong>PC Register</strong></p>
 <p>스레드가 시작 될 때 생성, 현재 수행중인 JVM의 명령의 주소를 가진다.</p>
 <p><strong>JVM Stack</strong></p>
@@ -75,9 +69,9 @@
 <p>메서드의 실제 작업 공간이다. 각 메서드는 피연산자 스택과 지역 변수 배열 사이에서 데이터를 교환하고, 다른 메서드 호출 결과를 추가하거나(push) 꺼낸다(pop). 피연산자 스택 공간이 얼마나 필요한지는 컴파일할 때 결정할 수 있으므로, 피연산자 스택의 크기도 컴파일 시에 결정된다.</p>
 <p><strong>Native Method Stack</strong></p>
 <p>자바 외의 언어로 작성된 네이티브 코드를 위한 스택이다. 즉, JNI(Java Native Interface)를 통해 호출하는 C/C++ 등의 코드를 수행하기 위한 스택으로, 언어에 맞게 C 스택이나 C++ 스택이 생성된다.</p>
-<ul>
-<li><strong>모든 스레드가 공유하는 영역</strong></li>
-</ul>
+<blockquote>
+<p>모든 스레드가 공유하는 영역</p>
+</blockquote>
 <p><strong>Heap Area</strong></p>
 <p>인스턴스 또는 객체를 저장하는 공간으로 가비지 컬렉션 대상이다. JVM 성능 등의 이슈에서 가장 많이 언급되는 공간이다. 힙 구성 방식이나 가비지 컬렉션 방법 등은 JVM 벤더의 재량이다.</p>
 <p><strong>Method Area</strong></p>
@@ -85,10 +79,7 @@
 <p>크게 코드 캐시 영역과 PermGen 영역으로 나눌 수 있는데 코드 캐시 영역은 캐시 영역은 컴파일 된 코드를 저장하는 데 사용하고 <code>PermGen은 Deprecated되고 Metaspace 영역으로 변경</code>되었다. Metaspace는 클래스 메타 데이터를 native 메모리에 저장하고 메모리가 부족할 경우 이를 자동으로 늘려준다.</p>
 <p><strong>Runtime Constant Pool</strong></p>
 <p>각 클래스와 인터페이스의 상수뿐만 아니라, 메서드와 필드에 대한 모든 레퍼런스까지 담고 있는 테이블이다. 즉, 어떤 메서드나 필드를 참조할 때 JVM은 런타임 상수 풀을 통해 해당 메서드나 필드의 실제 메모리상 주소를 찾아서 참조한다.</p>
-<blockquote>
-<p> 실행 엔진(Executiontion Engine)</p>
-</blockquote>
-<p>클래스 로더를 통해 JVM 내의 런타임 데이터 영역에 배치된 바이트코드는 실행 엔진에 의해 실행된다. 실행 엔진은 자바 바이트코드를 명령어 단위로 읽어서 실행한다. CPU가 기계 명령어을 하나씩 실행하는 것과 비슷하다. 바이트코드의 각 명령어는 1바이트짜리 OpCode와 추가 피연산자로 이루어져 있으며, 실행 엔진은 하나의 OpCode를 가져와서 피연산자와 함께 작업을 수행한 다음, 다음 OpCode를 수행하는 식으로 동작한다.</p>
+<h3 id="실행-엔진-Executiontion-Engine"><a href="#실행-엔진-Executiontion-Engine" class="headerlink" title="실행 엔진(Executiontion Engine)"></a>실행 엔진(Executiontion Engine)</h3><p>클래스 로더를 통해 JVM 내의 런타임 데이터 영역에 배치된 바이트코드는 실행 엔진에 의해 실행된다. 실행 엔진은 자바 바이트코드를 명령어 단위로 읽어서 실행한다. CPU가 기계 명령어을 하나씩 실행하는 것과 비슷하다. 바이트코드의 각 명령어는 1바이트짜리 OpCode와 추가 피연산자로 이루어져 있으며, 실행 엔진은 하나의 OpCode를 가져와서 피연산자와 함께 작업을 수행한 다음, 다음 OpCode를 수행하는 식으로 동작한다.</p>
 <p>아마 최신 버전에서 JVM의 많은 부분들이 변경되어서 위의 내용은 크게 의미가 없을 수도.. static 변수도 기존에 Method 영역에 올라가는건데 지금은 바뀌었다고 한다. 나중에 변경된 내용을 따로 정리해보면 좋을듯 일단은 위의 구조를 토대로 이해하고 넘어가자.</p>
 <p>참고</p>
 <p> <a href="https://d2.naver.com/helloworld/1230" target="_blank" rel="noopener">Naver d2 JVM Internal </a></p>
@@ -122,7 +113,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Greeting</span> </span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">hello</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">String <span class="title">bye</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KoreanGreeting</span> <span class="keyword">implements</span> <span class="title">Greeting</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">bye</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Class와-Instance-Object"><a href="#Class와-Instance-Object" class="headerlink" title="Class와 Instance, Object"></a>Class와 Instance, Object</h2><h2 id="프로세스와-스레드의-차이"><a href="#프로세스와-스레드의-차이" class="headerlink" title="프로세스와 스레드의 차이"></a>프로세스와 스레드의 차이</h2><p>몰라</p>
 <h2 id="Java의-접근-제어자"><a href="#Java의-접근-제어자" class="headerlink" title="Java의 접근 제어자"></a>Java의 접근 제어자</h2><p><strong>public</strong> 접근 제한이 없다.</p>
-<p><strong>protected :</strong> 서브 클래스에서만 접근 가능</p>
+<p><strong>protected :</strong> 클래스가 정의되어 있는 해당 패키지 내 그리고 해당 클래스를 상속받은 외부 패키지의 클래스에서 접근이 가능</p>
 <p><strong>default :</strong> 아무런 접근 제한자를 명시하지 않으면 default 값이 되며, 동일한 패키지 내에서만 접근이 가능</p>
 <p><strong>private :</strong> 자기 자신, 클래스 내부에서만 접근이 가능</p>
 <h2 id="Java-Garbage-Collection"><a href="#Java-Garbage-Collection" class="headerlink" title="Java Garbage Collection"></a>Java Garbage Collection</h2><p>C++에서 new나 delete를 통해 메모리를 명시적으로 해제했지만 Java에서는 개발자가 프로그램 코드로 메모리를 명시적으로 해제하지 않고 가비지 컬렉터(Garbage Collector)가 이 역할을 대신한다.</p>
@@ -138,19 +129,13 @@
 <p>영역별 데이터 흐름은 아래와 같다.</p>
 <p><img src="/images/etc/image-20180602160808763.png" alt="image-20180602160808763"></p>
 <p>위의 Permanenet Generation 영역은 Method 영역에 포함된 부분이고.. Java 8부터 MetaSpace 영역으로 바뀌었다고 한다. 위 그림과 동일하게 적용되는지는 모르겠다. (PermGen 영역에서 일어나는 GC도 Major GC에 포함된다.)</p>
-<blockquote>
-<p>Young 영역</p>
-</blockquote>
-<p>새롭게 생성된 데이터 대부분이 Young Generation에 위치하며 여기서 객체가 할당 해제되는 경우 <strong>Minor GC</strong>가 발생했다고 한다.</p>
+<h3 id="Young-영역"><a href="#Young-영역" class="headerlink" title="Young 영역"></a>Young 영역</h3><p>새롭게 생성된 데이터 대부분이 Young Generation에 위치하며 여기서 객체가 할당 해제되는 경우 <strong>Minor GC</strong>가 발생했다고 한다.</p>
 <ul>
 <li>Eden 영역</li>
 <li>Survivor 영역(2개)</li>
 </ul>
 <p>으로 나뉘며, Eden에서 살아남은 객체는 Survivor 으로 보내고, Survivor영역이 가득 차면 다른 Survivor 영역으로 보낸다. 이 과정에서 살아남은 객체는 Old 영역으로 이동하게 된다.</p>
-<blockquote>
-<p>Old 영역</p>
-</blockquote>
-<p>접근 불가능 상태로 되지 않아 Young 영역에서 살아남은 객체가 여기로 복사된다. 대부분 Young 영역보다 크게 할당하며, 크기가 큰 만큼 Young 영역보다 GC는 적게 발생한다. 여기서 객체가 할당 해제되는 경우 <strong>Major GC</strong>가 발생했다고 한다.</p>
+<h3 id="Old-영역"><a href="#Old-영역" class="headerlink" title="Old 영역"></a>Old 영역</h3><p>접근 불가능 상태로 되지 않아 Young 영역에서 살아남은 객체가 여기로 복사된다. 대부분 Young 영역보다 크게 할당하며, 크기가 큰 만큼 Young 영역보다 GC는 적게 발생한다. 여기서 객체가 할당 해제되는 경우 <strong>Major GC</strong>가 발생했다고 한다.</p>
 <p>Old 영역은 기본적으로 데이터가 가득 차면 GC를 실행한다.</p>
 <p>Major GC는 아래와 같은 방식에 따라 동작한다. GC 방식에 따라 처리가 달라진다.</p>
 <ul>
@@ -163,6 +148,20 @@
 <p><a href="https://d2.naver.com/helloworld/1329" target="_blank" rel="noopener">Java Garbage Collection</a></p>
 </li>
 </ul>
+<h2 id="Spring에-적용된-디자인-패턴"><a href="#Spring에-적용된-디자인-패턴" class="headerlink" title="Spring에 적용된 디자인 패턴"></a>Spring에 적용된 디자인 패턴</h2><p>많은 패턴들이 적용되어 있겠지만 대표적으로 Singleton, Decorator, Proxy, Strategy 네개를 살펴보자.</p>
+<h3 id="Decorator"><a href="#Decorator" class="headerlink" title="Decorator"></a>Decorator</h3><p>주어진 상황 및 용도에 따라 어떤 객체에 기능을 덧붙이는 패턴이다.</p>
+<p>스프링에서는 아래와 같이 같은 타입의 Bean의 기능을 확장하는데 사용할 수 있다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">defaultService</span> <span class="keyword">implements</span> <span class="title">IExampleService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">startExample</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Example started"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Primary</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExampleServiceDecorator</span> <span class="keyword">implements</span> <span class="title">IExampleService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="meta">@Qualifier</span>(<span class="string">"defaultService"</span>)</span><br><span class="line">    <span class="keyword">private</span> IExampleService defaultService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">startExample</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String started = defaultService.startExample();</span><br><span class="line">        <span class="keyword">return</span> started + <span class="string">" and decorated with decorator example"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Singleton"><a href="#Singleton" class="headerlink" title="Singleton"></a>Singleton</h3><p>Singleton 패턴은 클래스의 인스턴스화를 하나의 객체로 제한하는 소프트웨어 디자인 패턴이다.</p>
+<p>스프링의 Bean들은 싱글톤 패턴이 직접적으로 적용된 것은 아니지만 빈 팩토리에서 한개의 인스턴스를 가지고 사용하기 때문에 싱글톤이 적용되어 있다고 할 수 있다.</p>
+<h3 id="Proxy"><a href="#Proxy" class="headerlink" title="Proxy"></a>Proxy</h3><p>다른 개체에 대한 액세스를 제어하기 위해 다른 개체에 대한 대리자 또는 자리 표시자를 제공하십시오.</p>
+<h2 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h2><p>Spring에서 AOP를 구현하는 3가지 방법.</p>
+<ul>
+<li>JDK Dynamic Proxy 생성</li>
+<li>Cglib 라이브러리 활용해 Proxy 생성</li>
+<li>AspectJ 라이브러리 활용</li>
+</ul>
+<p>스프링 내부적으로 빈 생성 시 디폴트로 Cglib 프록시로 생성된다.</p>
 <h2 id="Hash-Hasing-Collision-해결-방법"><a href="#Hash-Hasing-Collision-해결-방법" class="headerlink" title="Hash, Hasing Collision 해결 방법"></a>Hash, Hasing Collision 해결 방법</h2><p>Hash와 관련해서 자바에서는 HashMap, HashTable이 존재한다.</p>
 <p>HashMap과 HashTable을 정의한다면, <code>키에 대한 해시 값을 사용하여 값을 저장하고 조회하며, 키-값 쌍의 개수에 따라 동적으로 크기가 증가하는 associate array</code>라고 할 수 있다. 이 associate array를 지칭하는 다른 용어가 있는데, 대표적으로 Map, Dictionary, Symbol Table 등이다.</p>
 <blockquote>
@@ -233,15 +232,10 @@
 <p>TCP는 데이터의 정확한 전달을 중시한다. 3way handshaking을 통해 커넥션을 먼저 연결하고, 커넥션이 맺어진 이후에 데이터를 전송할 수 있다. 데이터 전송이 끝나면 4 way handshaking을 통해 커넥션을 종료한다.</p>
 <p>UDP의 경우에는 TCP에서 지원하는 데이터 재전송이나 커넥션 연결 등을 생략하기 때문에 전송 과정에서 데이터의 손실이 발생할 수 있다.  UDP 프로토콜은 VoIP와 같은 음성 서비스, 동영상 스트리밍 등에 사용한다.</p>
 <h2 id="HTTP-Request-Response-Header-methods-Status-Code"><a href="#HTTP-Request-Response-Header-methods-Status-Code" class="headerlink" title="HTTP Request, Response Header, methods, Status Code"></a>HTTP Request, Response Header, methods, Status Code</h2><p>HTTP는 Stateless 프로토콜 현재 요청에서는 이전 요청에서 수행된 작업을 알지 못한다.</p>
-<blockquote>
-<p>URL</p>
-</blockquote>
-<h4 id="Uniform-Resource-Locator-URL"><a href="#Uniform-Resource-Locator-URL" class="headerlink" title="Uniform Resource Locator (URL)"></a>Uniform Resource Locator (URL)</h4><p>HTTP 요청을 보내기 위해서 URL을 사용한다.</p>
+<h3 id="Uniform-Resource-Locator-URL"><a href="#Uniform-Resource-Locator-URL" class="headerlink" title="Uniform Resource Locator (URL)"></a>Uniform Resource Locator (URL)</h3><p>HTTP 요청을 보내기 위해서 URL을 사용한다.</p>
 <p>URL (Uniform Resource Locator)은 웹을 통해 리소스를 고유하게 식별하는 데 사용하며 구조는 아래와 같다.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protocol://hostname:port/path-and-file-name</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>HTTP Request</p>
-</blockquote>
+<h3 id="HTTP-Request"><a href="#HTTP-Request" class="headerlink" title="HTTP Request"></a>HTTP Request</h3><p>HTTP Request는 아래와 같은 구조를 가지고 있다.</p>
 <p><img src="/images/etc/image-20180603203000371.png" alt="image-20180603203000371"></p>
 <p><strong>Request Message Header</strong></p>
 <ul>
@@ -256,10 +250,7 @@
 <p>바디와 헤더의 구분을 위해 들어가는 CRLF</p>
 <p><strong>Request Message Body</strong></p>
 <p>Body 영역, 사실 위와 같은 GET 요청에는 Message Body가 없다.</p>
-<blockquote>
-<p>HTTP Response</p>
-</blockquote>
-<p><img src="/images/etc/image-20180603203355021.png" alt="image-20180603203355021"></p>
+<h3 id="HTTP-Response"><a href="#HTTP-Response" class="headerlink" title="HTTP Response"></a>HTTP Response</h3><p><img src="/images/etc/image-20180603203355021.png" alt="image-20180603203355021"></p>
 <p><strong>Response Message Header</strong></p>
 <ul>
 <li><strong>Status Line</strong></li>
@@ -273,27 +264,33 @@
 <p>바디와 헤더의 구분을 위해 들어가는 CRLF</p>
 <p><strong>Response Message Body</strong></p>
 <p>HTML 파일의 내용이 들어간다.</p>
-<blockquote>
-<p>HTTP Request Methods</p>
-</blockquote>
-<p>클라이언트에서는 아래의 HTTP Request Method를 이용해 HTTP 서버로 요청을 보낼 수 있다.</p>
-<p><strong>GET</strong></p>
+<h3 id="HTTP-Request-Methods"><a href="#HTTP-Request-Methods" class="headerlink" title="HTTP Request Methods"></a>HTTP Request Methods</h3><p>클라이언트에서는 아래의 HTTP Request Method를 이용해 HTTP 서버로 요청을 보낼 수 있다.</p>
+<ul>
+<li><strong>GET</strong></li>
+</ul>
 <p>GET 요청을 통해 서버에서 리소스를 가져올 수 있다.</p>
-<p><strong>HEAD</strong></p>
+<ul>
+<li><strong>HEAD</strong></li>
+</ul>
 <p>클라이언트는 HEAD 요청을 사용하여 GET 요청이 얻었을 헤더를 얻을 수 있다. 헤더에는 데이터의 최종 수정 날짜가 포함되어 있으므로 이 데이터를 사용하여 로컬 캐시 복사본을 검사 할 수 있다.</p>
-<p><strong>POST</strong></p>
+<ul>
+<li><strong>POST</strong></li>
+</ul>
 <p>서버에 데이터를 Create 하거나 할 때 사용 ex) 게시글 등록, 회원 가입</p>
-<p><strong>PUT</strong></p>
+<ul>
+<li><strong>PUT</strong></li>
+</ul>
 <p>서버 데이터 수정 시 사용(전체 변경 시)</p>
-<p><strong>PATCH</strong></p>
+<ul>
+<li><strong>PATCH</strong></li>
+</ul>
 <p>서버 데이터 수정 시 (일부 변경)</p>
-<p><strong>DELETE</strong></p>
+<ul>
+<li><strong>DELETE</strong></li>
+</ul>
 <p>웹 서버에 데이터 Delete 요청 할 때 사용</p>
 <p>그 외에도.. TRACE, OPTIONS, CONNECT.. 가 있다고 하는데 써본적도 없고 중요하지 않은것 같아서 패스</p>
-<blockquote>
-<p>Status Code</p>
-</blockquote>
-<table>
+<h3 id="Status-Code"><a href="#Status-Code" class="headerlink" title="Status Code"></a>Status Code</h3><table>
 <thead>
 <tr>
 <th style="text-align:center">상태 코드</th>
@@ -358,7 +355,7 @@
   s.src = '//kyunam-disqus-com.disqus.com/embed.js';
   s.setAttribute('data-timestamp', +new Date());
   (d.head || d.body).appendChild(s);
-})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-06-03T12:06:37.409Z"><meta itemprop="articleBody" content="String, StringBuilder, StringBuffer 차이
+})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-06-04T14:39:41.444Z"><meta itemprop="articleBody" content="String, StringBuilder, StringBuffer 차이
 String
 
 String 클래스는 Immutable 객체이기 때문에 + 등 concat 연산 시 원본을 변경하지 않고 새로운 String 인스턴스를 생성해야 하는 단점이 존재한다. 하지만 JDK 1.5 이후부터는 컴파일 타임에 StringBuilder로 변경한다고..."><meta itemprop="url" content="http://yoursite.com/etc/interview/"><meta itemprop="mainEntityOfPage" content="http://yoursite.com/etc/interview/"><div itemscope itemtype="https://schema.org/Organization" itemprop="publisher"><meta itemprop="name" content="Devlog"><div itemscope itemprop="logo" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="http://yoursite.com/images/internet.png"></div></div><div itemscope itemtype="https://schema.org/ImageObject" itemprop="image"><meta itemprop="contentUrl" content="http://yoursite.com/images/people.png"><meta itemprop="url" content="http://yoursite.com/images/people.png"><meta itemprop="width" content="1280"><meta itemprop="height" content="720"></div></article></div></div></div><footer id="footer"><div class="widgets"><div class="widgets-inner"><!-- Jade doesn't support dynamic inclusion with `each`.--><!-- So, I just hard coded the file names that will be included.--><div class="widgets__item"><h3 class="widgets__item__heading">Recent posts</h3><ul class="recent-posts"><li class="recent-posts__item"><a href="/etc/interview/">서버 개발자 면접 질문 정리</a></li><li class="recent-posts__item"><a href="/java/spring/spring-boot-ref-doc-03/">Spring Boot</a></li><li class="recent-posts__item"><a href="/java/spring/spring-security/">Spring Security의 간략한 구조</a></li><li class="recent-posts__item"><a href="/algorithm/algorithm-20/">Codility 5-2 PassingCars</a></li><li class="recent-posts__item"><a href="/java/spring/spring-boot-angular-03/">스프링 부트와 Angular로 게시판 만들기 - 3. 로그인</a></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Categories</h3><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/">Backend</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/">Java</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/DesignPattern/">DesignPattern</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/Spring/">Spring</a><span class="category-list-count">4</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/Hexo/">Hexo</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Algorithm/">Algorithm</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Datastructure/">Datastructure</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Javascript/">Javascript</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">1</span></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Tag cloud</h3><div class="tag-cloud"><a href="/tags/AbstractFactory/" style="font-size: 0.94rem;">AbstractFactory</a> <a href="/tags/Algorithm/" style="font-size: 1.5rem;">Algorithm</a> <a href="/tags/Graph/" style="font-size: 0.75rem;">Graph</a> <a href="/tags/Hexo/" style="font-size: 0.75rem;">Hexo</a> <a href="/tags/Interview/" style="font-size: 0.75rem;">Interview</a> <a href="/tags/Java/" style="font-size: 1.31rem;">Java</a> <a href="/tags/Javascript/" style="font-size: 0.94rem;">Javascript</a> <a href="/tags/Spring/" style="font-size: 1.13rem;">Spring</a> <a href="/tags/SpringBoot/" style="font-size: 0.75rem;">SpringBoot</a></div></div></div></div><p class="copyright"><small>© 2018 KyuNam<br>Powered by <a href="https://hexo.io" rel="external" target="_blank">Hexo</a>, Theme by <a href="https://github.com/hyunseob" rel="external" target="_blank">HyunSeob</a></small></p></footer><script src="/js/sharer.min.js"></script></body></html>
