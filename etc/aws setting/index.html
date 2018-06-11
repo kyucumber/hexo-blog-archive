@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="kr"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><title>AWS EC2 생성 및 RDS 구축하기 | Devlog</title><link rel="stylesheet" href="/libs/spoqa-han-sans-kr/css/SpoqaHanSans-kr.css"><link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="/css/highlights/dracula.css"><link rel="canonical" href="http://yoursite.com/etc/aws setting/"/>
+<meta name="description" content="AWS EC2 생성 및 RDS 구축하기개발한 프로젝트를 운영할 AWS 환경을 구축해보자. AWS EC2 인스턴스 생성  Step 1: Machine Image  AWS Console에서 EC2 생성을 누르면 아래와 같은 화면이 나온다. 대여할…">
+<meta name="keywords" content="Interview">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS EC2 생성 및 RDS 구축하기">
+<meta property="og:url" content="http://yoursite.com/etc/aws setting/">
+<meta property="og:site_name" content="Devlog">
+<meta property="og:description" content="AWS EC2 생성 및 RDS 구축하기개발한 프로젝트를 운영할 AWS 환경을 구축해보자. AWS EC2 인스턴스 생성  Step 1: Machine Image  AWS Console에서 EC2 생성을 누르면 아래와 같은 화면이 나온다. 대여할…">
+<meta property="og:locale" content="kr">
+<meta property="og:image" content="http://yoursite.com/images/people.png">
+<meta property="og:updated_time" content="2018-06-11T11:53:59.922Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AWS EC2 생성 및 RDS 구축하기">
+<meta name="twitter:description" content="AWS EC2 생성 및 RDS 구축하기개발한 프로젝트를 운영할 AWS 환경을 구축해보자. AWS EC2 인스턴스 생성  Step 1: Machine Image  AWS Console에서 EC2 생성을 누르면 아래와 같은 화면이 나온다. 대여할…">
+<meta name="twitter:image" content="http://yoursite.com/images/people.png"><meta property="article:author" content="https://www.facebook.com/xmfpes"><meta property="twitter:label1" content="Published at"><meta property="twitter:data1" content="2018-06-11 21:30:00"><meta property="twitter:label2" content="Written by"><meta property="twitter:data2" content="KyuNam"><link rel="icon" href="/images/internet.png"><link rel="alternate" href="/atom.xml" type="application/atom+xml" title="Devlog"></head><body itemscope itemtype="https://schema.org/WebPage"><nav class="menu" id="menu"><div class="menu-inner"><div class="menu__left-area"><div class="menu__item"><a class="menu__item__link menu__item__link--brand" href="/" title="Home" rel="home"><img class="menu__item__link--brand__image" src="/images/internet.png" alt="Devlog"><span class="menu__item__link--brand__label">Devlog</span></a></div></div><div class="menu__right-area"><div class="menu__item"><a class="menu__item__link" href="/">Home</a></div><div class="menu__item"><a class="menu__item__link" href="/about">About</a></div><div class="menu__item"><a class="menu__item__link" href="/archives">Archives</a></div></div></div></nav><div class="page-background"></div><div class="content-container"><div class="content-outer"><div class="content-inner" itemscope itemtype="https://schema.org/Blog"><article class="article" id="article" itemscope itemtype="https://schema.org/BlogPosting"><h1 class="article__title" itemprop="headline">AWS EC2 생성 및 RDS 구축하기</h1><div class="article__meta"><time class="article__meta__time" datetime="2018-06-11T12:30:00.000Z" itemprop="datePublished">2018-06-11 21:30:00</time><div class="article__meta__categories"><a class="article__meta__categories__item" href="/categories/Interview/">Interview</a></div></div><div class="article__contents"><img src="/images/people.png"/><h2 id="AWS-EC2-생성-및-RDS-구축하기"><a href="#AWS-EC2-생성-및-RDS-구축하기" class="headerlink" title="AWS EC2 생성 및 RDS 구축하기"></a>AWS EC2 생성 및 RDS 구축하기</h2><p>개발한 프로젝트를 운영할 AWS 환경을 구축해보자.</p>
+<h3 id="AWS-EC2-인스턴스-생성"><a href="#AWS-EC2-인스턴스-생성" class="headerlink" title="AWS EC2 인스턴스 생성"></a>AWS EC2 인스턴스 생성</h3><blockquote>
+<p> Step 1: Machine Image</p>
+</blockquote>
+<p>AWS Console에서 EC2 생성을 누르면 아래와 같은 화면이 나온다.</p>
+<p>대여할 아마존 클라우드 서버의 운영체제를 선택하는건데, 아래의 아마존 리눅스를 선택하자.(내부적으로 CentOS와 동일)</p>
+<p><img src="/images/etc/ec2.png" alt=""></p>
+<blockquote>
+<p>Step 2: Choose Instance Type</p>
+</blockquote>
+<p>다음으로 인스턴스를 선택하자 cpu나, memory 등을 지정하는 탭인데 많은 리소스를 사용할 게 아니라면 아래의 초록색으로 표시된 Free tier를 이용하면 된다.</p>
+<p><img src="/images/etc/tier.png" alt=""></p>
+<blockquote>
+<p>Step 3: Configure Instance Details</p>
+</blockquote>
+<p>아래처럼 디폴트 값 설정 후 Next로 진행</p>
+<p><img src="/images/etc/step3.png" alt=""></p>
+<blockquote>
+<p>Step 4: Step 4: Add Storage</p>
+</blockquote>
+<p>기본 8기가로 디스크 Size가 설정되어 있는데..</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Free tier eligible customers can get up to 30 GB of EBS General Purpose (SSD) or Magnetic storage. Learn more about free usage tier eligibility and usage restrictions.</span><br></pre></td></tr></table></figure>
+<p>Free tier는 30기가까지 프리 티어로 지원이 되니까. 30으로 설정</p>
+<p><img src="/images/etc/step4.png" alt=""></p>
+<blockquote>
+<p>Step 5: Tag</p>
+</blockquote>
+<p>tag는 그냥 여러 인스턴스가 있을 때 인스턴스의 구분을 위해 주는 값, 알아서 잘 식별 할 수 있도록 설정</p>
+<p><img src="/images/etc/step5.png" alt=""></p>
+<blockquote>
+<p>Step 6: Configure Security Group</p>
+</blockquote>
+<p>처음 SSH는 터미널로 접속할 때의 포트이고 아래의 HTTP, HTTPS는 웹 서비스에 접근할 포트다.</p>
+<p>22 포트는 SSH로 EC2에 접속할 포트라 본인 IP 외에는 막는게 좋다고 한다. 어차피 키로 접근하니까 상관없긴 하겠지만 찝찝하니까 아래의 Custom을 본인 IP로만 허용하도록 변경하자.</p>
+<p><img src="/images/etc/step6.png" alt=""></p>
+<blockquote>
+<p>Step 7: Review And Instance Launch</p>
+</blockquote>
+<p>설정 사항중 이상한 게 없는지 체크하고 시작을 누르면 key pair 설정과 관련된 창이 아래처럼 나온다.</p>
+<p>아래 창을 무시하지말고..key pair를 새로 create 하고, 다운로드 받은 뒤 Launch Instance를 통해 인스턴스를 생성하자.</p>
+<p><img src="/images/etc/keypair.png" alt=""></p>
+<h3 id="Elastic-IP-등록하기"><a href="#Elastic-IP-등록하기" class="headerlink" title="Elastic IP 등록하기"></a>Elastic IP 등록하기</h3><p>지금 현재 EC2는 고정 IP가 할당되어 있지 않아서 매번 재시작마다 IP가 변경되게 된다. Amazon Aws에서 지원하는 Elastic IP를 이용해 고정 아이피를 할당하자</p>
+<p>아래처럼 좌측 탭을 내려보면 해당 항목이 있다. Allocate new address를 클릭</p>
+<p><img src="/images/etc/elip.png" alt=""></p>
+<p>Allocate new address를 눌러 할당 받은 뒤 다시 아까 페이지에서 생성된 IP 오른쪽 클릭을 통해 아까 만든 인스턴스와 아까 만든 ip 주소를 연결하자</p>
+<p><img src="/images/etc/elipConnect.png" alt=""></p>
+<p><img src="/images/etc/address.png" alt=""></p>
+<h3 id="EC2-터미널에서-접속해보기"><a href="#EC2-터미널에서-접속해보기" class="headerlink" title="EC2 터미널에서 접속해보기"></a>EC2 터미널에서 접속해보기</h3><p>이것과 관련된 설정은 여기를 참고 <a href="http://jojoldu.tistory.com/259?category=635883#3-ec2-%ED%84%B0%EB%AF%B8%EB%84%90-%EC%A0%91%EC%86%8D" target="_blank" rel="noopener">EC2 터미널 접속</a></p>
+<p>여튼 설정을 완료하고 접속하면 아래와 같은 화면을 볼 수 있다.</p>
+<p><img src="/images/etc/amazon.png" alt=""></p>
+<p>화면에 메세지를 보니 무슨 업데이트를 해달라고 한다. 실행</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum update</span><br></pre></td></tr></table></figure>
+<h3 id="Amazon-RDS-설정하기"><a href="#Amazon-RDS-설정하기" class="headerlink" title="Amazon RDS 설정하기"></a>Amazon RDS 설정하기</h3><p>RDS는 아마존에서 제공하는 DB 서비스다. 콘솔에서 RDS를 검색해보자.</p>
+<h4 id="생성-설정하기"><a href="#생성-설정하기" class="headerlink" title="생성, 설정하기"></a>생성, 설정하기</h4><blockquote>
+<p>Step 1. Select Engine</p>
+</blockquote>
+<p>어떤 DB를 선택할지를 고르는 단계 Aurora가 좋다고는 하는데 비싸니까 MariaDB를 선택</p>
+<p><img src="/images/etc/rdsstep1.png" alt=""></p>
+<blockquote>
+<p>Step 2 Choose use case</p>
+</blockquote>
+<p>프리 티어를 사용하기 때문에 개발/테스트로 설정</p>
+<p><img src="/images/etc/rdsstep2.png" alt=""></p>
+<blockquote>
+<p>Step 3. Specify DB details</p>
+</blockquote>
+<p>RDS의 세부 설정을 정하는데, 프리티어니까 t2.micro, 20GB로 셋팅</p>
+<p>설정의 마스터 <strong>사용자 이름</strong>과 <strong>비밀번호</strong>, <strong>데이터베이스 이름</strong> 이 3가지는 외부에서 접근할때 사용될 정보이기 때문에 별도로 적어두거나 기억해야 한다.</p>
+<p>그리고 지금은 하나의 마스터 사용자만 두지만, 이후에 읽기/쓰기 권한, 읽기 권한만 있는 계정 2개를 생성해 사용하는것을 권장(DB Replication, Master 1, Slave 2)</p>
+<p><img src="/images/etc/rdsstep3.png" alt=""></p>
+<blockquote>
+<p>Step 4. Configure advanced settings</p>
+</blockquote>
+<p>보안 그룹이나 db 네임을 세팅하는 항목입니다. 보안 그룹은 새로 생성하고 추후 설정하고, 데이터베이스 이름을 설정하고 넘어가자</p>
+<p><img src="/images/etc/rdsstep4.png" alt=""></p>
+<p>생성 후 조금 시간이 걸리는데 완료되면 아래와 같이 나타난다.</p>
+<p><img src="/images/etc/status.png" alt=""></p>
+<p>그리고, 기존에 그냥 넘어갔던 보안 그룹 설정을 진행해야 하는데, 인스턴스의 이름을 클릭하고 세부 사항을 확인하자</p>
+<p><img src="/images/etc/securityGroup.png" alt=""></p>
+<p>위의 링크를 클릭해서 보안 그룹 페이지로 이동 후 필터로 아까 EC2에 설정한 보안 그룹을 확인</p>
+<p><img src="/images/etc/securityGroup2.png" alt=""></p>
+<p>위의 Group ID를 복사하고, 왼쪽 위 파란 버튼을 눌러 새 보안 그룹을 생성하자 아까 복사한 Group Id는 인바운드에 추가해주고, 하나는 My IP로 지정한다.</p>
+<p>Group Id를 추가해서 EC2에서 RDS에 접근할 수 있도록 하고, 내 아이피를 추가해 Workbench나 Sequel Pro 등으로 접근할 수 있다.</p>
+<p><img src="/images/etc/securityGroup3.png" alt=""></p>
+<p>이제 보안 그룹이 생성됐고, <code>RDS Instance -&gt; detail -&gt; Modify -&gt; Network &amp; Security</code> 에서 보안 그룹에 아까 만든 보안 그룹을 추가하자.</p>
+<p><img src="/images/etc/securityGroup4.png" alt=""></p>
+<h4 id="로컬에서-RDS-접속-확인하기"><a href="#로컬에서-RDS-접속-확인하기" class="headerlink" title="로컬에서 RDS 접속 확인하기"></a>로컬에서 RDS 접속 확인하기</h4><p>출처: </p>
+<p><a href="http://jojoldu.tistory.com/259?category=635883" target="_blank" rel="noopener">http://jojoldu.tistory.com/259?category=635883</a></p>
+<p> [기억보단 기록을]</p>
+<ul>
+<li>기억보단 기록을 - 스프링부트로 웹 서비스 출시하기 - 4. AWS EC2 &amp; RDS 구축하기](<a href="http://jojoldu.tistory.com/259?category=635883" target="_blank" rel="noopener">http://jojoldu.tistory.com/259?category=635883</a>)</li>
+</ul>
+</div><div class="article__tags"><a class="article__tags__item" href="/tags/Interview/">Interview</a></div><div class="article__author" itemscope itemprop="author" itemtype="https://schema.org/Person"><img class="article__author__image" src="/images/profile.png" alt="KyuNam"><a class="article__author__link" title="About KyuNam" rel="author">KyuNam</a><p class="article__author__desc">dev log</p><div class="article__author__socials"><a class="article__author__socials__item" href="https://github.com/tramyu" title="github" target="_blank"><i class="fa fa-github"></i></a><a class="article__author__socials__item" href="https://www.facebook.com/xmfpes" title="facebook" target="_blank"><i class="fa fa-facebook"></i></a><a class="article__author__socials__item" href="https://www.linkedin.com/feed/" title="linkedin" target="_blank"><i class="fa fa-linkedin"></i></a><a class="article__author__socials__item" href="https://www.instagram.com/" title="instagram" target="_blank"><i class="fa fa-instagram"></i></a><a class="article__author__socials__item" href="/atom.xml" title="rss" target="_blank"><i class="fa fa-rss"></i></a></div><meta itemprop="name" content="KyuNam"></div><div class="sharer" id="sharer"><div class="sharer-inner"><div class="sharer__right"><button class="sharer__item" id="sharer-facebook"><i class="fa fa-facebook-official"></i></button><button class="sharer__item" id="sharer-twitter"><i class="fa fa-twitter"></i></button><button class="sharer__item" id="sharer-pinterest"><i class="fa fa-pinterest"></i></button><button class="sharer__item" id="sharer-pocket"><i class="fa fa-get-pocket"></i></button></div></div></div><!-- Disqus Code--><div id="disqus_thread"></div><script>(function() {
+  var d = document, s = d.createElement('script');
+  s.src = '//kyunam-disqus-com.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();</script><noscript>Enable JavaScript to see comments.</noscript><!-- Meta Tags for Structured Data--><meta itemprop="dateModified" content="2018-06-11T11:53:59.922Z"><meta itemprop="articleBody" content="AWS EC2 생성 및 RDS 구축하기개발한 프로젝트를 운영할 AWS 환경을 구축해보자.
+AWS EC2 인스턴스 생성
+ Step 1: Machine Image
+
+AWS Console에서 EC2 생성을 누르면 아래와 같은 화면이 나온다.
+대여할 아마존 클라우드 서버의 운영체제를 선택하는건데, 아래의 아마존 리눅스를 선택하자.(내부적으로 CentOS와..."><meta itemprop="url" content="http://yoursite.com/etc/aws setting/"><meta itemprop="mainEntityOfPage" content="http://yoursite.com/etc/aws setting/"><div itemscope itemtype="https://schema.org/Organization" itemprop="publisher"><meta itemprop="name" content="Devlog"><div itemscope itemprop="logo" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="http://yoursite.com/images/internet.png"></div></div><div itemscope itemtype="https://schema.org/ImageObject" itemprop="image"><meta itemprop="contentUrl" content="http://yoursite.com/images/people.png"><meta itemprop="url" content="http://yoursite.com/images/people.png"><meta itemprop="width" content="1280"><meta itemprop="height" content="720"></div></article><section class="related-posts"><h3>Related posts</h3><div class="related-posts__item__wrapper"><a class="related-posts__item" href="/etc/interview/"><div class="related-posts__item__background" style="background-image:url('/images/people.png');"></div><div class="related-posts__item__overlay"></div><span class="related-posts__item__title">서버 개발자 면접 질문 정리</span></a></div></section></div></div></div><footer id="footer"><div class="widgets"><div class="widgets-inner"><!-- Jade doesn't support dynamic inclusion with `each`.--><!-- So, I just hard coded the file names that will be included.--><div class="widgets__item"><h3 class="widgets__item__heading">Recent posts</h3><ul class="recent-posts"><li class="recent-posts__item"><a href="/etc/aws setting/">AWS EC2 생성 및 RDS 구축하기</a></li><li class="recent-posts__item"><a href="/java/spring/spring-profile/">Spring Profile 설정하기</a></li><li class="recent-posts__item"><a href="/etc/interview/">서버 개발자 면접 질문 정리</a></li><li class="recent-posts__item"><a href="/java/spring/spring-security/">Spring Security의 간략한 구조</a></li><li class="recent-posts__item"><a href="/algorithm/algorithm-20/">Codility 5-2 PassingCars</a></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Categories</h3><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/">Backend</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/">Java</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/DesignPattern/">DesignPattern</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Backend/Java/Spring/">Spring</a><span class="category-list-count">5</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/Hexo/">Hexo</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/">CS</a><span class="category-list-count">21</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Algorithm/">Algorithm</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/CS/Datastructure/">Datastructure</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/">Frontend</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Frontend/Javascript/">Javascript</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Interview/">Interview</a><span class="category-list-count">2</span></li></ul></div><div class="widgets__item"><h3 class="widgets__item__heading">Tag cloud</h3><div class="tag-cloud"><a href="/tags/AbstractFactory/" style="font-size: 0.94rem;">AbstractFactory</a> <a href="/tags/Algorithm/" style="font-size: 1.5rem;">Algorithm</a> <a href="/tags/Graph/" style="font-size: 0.75rem;">Graph</a> <a href="/tags/Hexo/" style="font-size: 0.75rem;">Hexo</a> <a href="/tags/Interview/" style="font-size: 0.94rem;">Interview</a> <a href="/tags/Java/" style="font-size: 1.31rem;">Java</a> <a href="/tags/Javascript/" style="font-size: 0.94rem;">Javascript</a> <a href="/tags/Spring/" style="font-size: 1.13rem;">Spring</a></div></div></div></div><p class="copyright"><small>© 2018 KyuNam<br>Powered by <a href="https://hexo.io" rel="external" target="_blank">Hexo</a>, Theme by <a href="https://github.com/hyunseob" rel="external" target="_blank">HyunSeob</a></small></p></footer><script src="/js/sharer.min.js"></script></body></html>
